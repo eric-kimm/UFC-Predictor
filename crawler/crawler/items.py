@@ -14,8 +14,6 @@ class FighterItem(scrapy.Item):
     stance = scrapy.Field()
     dob = scrapy.Field()
 
-
-    ### Remove Later ###
     slpm = scrapy.Field()
     str_acc = scrapy.Field()
     sapm = scrapy.Field()
@@ -27,30 +25,40 @@ class FighterItem(scrapy.Item):
     sub_avg = scrapy.Field()
 
 class FightItem(scrapy.Item):
-    # Identity fields
-    # fight_id = scrapy.Field()
-    # fighter_name = scrapy.Field()
-    # fighter_id = scrapy.Field()
-    # opponent_name = scrapy.Field()
-    # opponent_id = scrapy.Field()
-
     # Identity Fields
     fight_id = scrapy.Field()
+    event_id = scrapy.Field()
+    event_date = scrapy.Field()
+    weight_class = scrapy.Field()   
+    gender = scrapy.Field()
+    is_title_fight = scrapy.Field()
+
+    # Fighters
     red_fighter_name = scrapy.Field()
     red_fighter_id = scrapy.Field()
     blue_fighter_name = scrapy.Field()
     blue_fighter_id = scrapy.Field()
+
+    # Outcome
+    result_type = scrapy.Field() # Win, Draw, NC
     winner_id = scrapy.Field()
     loser_id = scrapy.Field()
+    winner_color = scrapy.Field()
+
+    # Time and Rounds
+    end_round = scrapy.Field()
+    end_round_time = scrapy.Field()
+    end_round_time_seconds = scrapy.Field()
+    total_duration_seconds = scrapy.Field()
+    rounds_scheduled = scrapy.Field()
+    time_scheduled_seconds = scrapy.Field()
 
     # Results
-    result_type = scrapy.Field() # Win/Loss, Draw, NC
-    method = scrapy.Field()
-    round = scrapy.Field()
-    time = scrapy.Field()
-    time_seconds = scrapy.Field()
-    scheduled_rounds = scrapy.Field()
-    scheduled_time_seconds = scrapy.Field()
+    method_raw = scrapy.Field()     ##
+    finish_type = scrapy.Field()    ##    # KO/TKO | SUB | DEC | DQ | NC | Draw
+    decision_type = scrapy.Field()  ##    # U-DEC | M-DEC | S-DEC | None
+
+    # Context
     referee = scrapy.Field()
 
 class EventItem(scrapy.Item):
@@ -58,6 +66,7 @@ class EventItem(scrapy.Item):
     event_id = scrapy.Field()
     event_name = scrapy.Field()
     event_date = scrapy.Field()
+    event_location = scrapy.Field()
     weight_class = scrapy.Field()
 
 class FighterFightItem(scrapy.Item):
@@ -72,12 +81,12 @@ class FighterFightItem(scrapy.Item):
     knockdowns = scrapy.Field()
     sig_str_landed = scrapy.Field()
     sig_str_attempted = scrapy.Field()
-    sig_str_percentage = scrapy.Field()
+    sig_str_percentage = scrapy.Field()     # REMOVE
     tot_str_landed = scrapy.Field()
     tot_str_attempted = scrapy.Field()
     td_landed = scrapy.Field()
     td_attempted = scrapy.Field()
-    td_percentage = scrapy.Field()
+    td_percentage = scrapy.Field()      # REMOVE
     sub_attempts = scrapy.Field()
     reversals = scrapy.Field()
     ctrl_time = scrapy.Field()
