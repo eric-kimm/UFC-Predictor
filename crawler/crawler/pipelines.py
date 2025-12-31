@@ -10,9 +10,15 @@ import os
 import psycopg2
 from datetime import datetime
 import re
+from crawler.items import FighterItem, FightItem, EventItem, FighterFightItem
+import logging
+
+logger = logging.getLogger(__name__)
 
 class CleanItemPipeline:
     def process_item(self, item, spider):
+        if not isinstance(item,  FighterItem):
+            return item
         # Clean height
         def parse_height(h):
             if not h:
@@ -83,38 +89,126 @@ class CleanItemPipeline:
 
         return item
 
-class PostgresPipeline:
-    def open_spider(self, spider):
-        hostname = 'localhost'
-        username = 'erickim'
-        password = os.getenv("POSTGRES_PASSWORD")
-        database = 'ufc'
 
-        self.connection = psycopg2.connect(
-            host=hostname,
-            user=username,
-            password=password,
-            dbname=database
-        )
-        self.cur = self.connection.cursor()
-    
-    def close_spider(self, spider):
-        self.connection.commit()
-        self.cur.close()
-        self.connection.close()
-
+class FightIdentityPipeline:
     def process_item(self, item, spider):
-        self.cur.execute("""
-            INSERT INTO fighters (
-                fighter_id, name, height, weight, reach, stance, dob,
-                slpm, str_acc, sapm, str_def,
-                td_avg, td_acc, td_def, sub_avg
-            ) VALUES (
-                %(fighter_id)s, %(name)s, %(height)s, %(weight)s, %(reach)s, %(stance)s, %(dob)s,
-                %(slpm)s, %(str_acc)s, %(sapm)s, %(str_def)s,
-                %(td_avg)s, %(td_acc)s, %(td_def)s, %(sub_avg)s
-            )
-            ON CONFLICT (fighter_id) DO NOTHING;
-        """, dict(item))
-        print("INSERTED ITEM:", dict(item))
+        if not isinstance(item,  FightItem):
+            return item
+        
+        item['winner_id'] = None
+        item['loser_id'] = None
+        item['winner_color'] = None
+
+        red_status = item.get('red_status', '').strip()
+        
+        if red_status == 'W':
+            item['winner_id'] = item['red_fighter_id']
+            item['loser_id'] = item['blue_fighter_id']
+            item['result_type'] = 'Win'
+            item['winner_color'] = 'Red'
+        elif red_status == 'L':
+            item['winner_id'] = item['blue_fighter_id']
+            item['loser_id'] = item['red_fighter_id']
+            item['result_type'] = 'Win'
+            item['winner_color'] = 'Blue'
+        elif red_status == 'D':
+            item['result_type'] = 'Draw'
+        else:
+            item['result_type'] = 'NC'
+
+        item['is_title_fight'] = 1 if item.get('is_title_fight') else 0
+        
         return item
+    
+class FightTimePipeline:
+    def process_item(self, item, spider):
+        if not isinstance(item, FightItem):
+            return item
+        end_rnd = item.get('end_round')
+        end_rnd_time = item.get('end_round_time')
+        sched_rnd = item.get('rounds_scheduled')
+
+        if sched_rnd:
+            item['time_scheduled'] = sched_rnd * 5 * 60
+
+        if all(v is not None for v in [end_rnd, end_rnd_time]):
+            item['total_duration'] = ((end_rnd - 1) * 300) + end_rnd_time
+
+        # logger.info("ITEM: %s", dict(item))
+        return item
+    
+class FightResultsPipeline:
+    def process_item(self, item, spider):
+        if not isinstance(item, FightItem):
+            return item
+        
+        def determine_decision(text):
+            if "unanimous" in text:
+                return"U-DEC"
+            elif "split" in text:
+                return "S-DEC"
+            elif "majority" in text:
+                return "M-DEC"
+            else:
+                return "OTHER-DEC"
+            
+        item['decision_type'] = None
+        res = item.get('result_type')
+        method_lower = item.get('method_raw').lower()
+        if res == "NC":
+            item["finish_type"] = res
+        elif res == "Draw":
+            item["finish_type"] = res
+            item["decision_type"] = determine_decision(method_lower)
+        else:
+            if "ko" in method_lower:
+                item["finish_type"] = "KO/TKO"
+            elif "submission" in method_lower:
+                item["finish_type"] = "SUB"
+            elif "decision" in method_lower:
+                item["finish_type"] = "DEC"
+                item["decision_type"] = determine_decision(method_lower)
+            elif "dq" in method_lower:
+                item["finish_type"] = "DQ"
+            else:
+                item["finish_type"] = "OTHER"
+
+        print(dict(item))
+        return item
+        
+
+# class PostgresPipeline:
+#     def open_spider(self, spider):
+#         hostname = 'localhost'
+#         username = 'erickim'
+#         password = os.getenv("POSTGRES_PASSWORD")
+#         database = 'ufc'
+
+#         self.connection = psycopg2.connect(
+#             host=hostname,
+#             user=username,
+#             password=password,
+#             dbname=database
+#         )
+#         self.cur = self.connection.cursor()
+    
+#     def close_spider(self, spider):
+#         self.connection.commit()
+#         self.cur.close()
+#         self.connection.close()
+
+#     def process_item(self, item, spider):
+#         self.cur.execute("""
+#             INSERT INTO fighters (
+#                 fighter_id, name, height, weight, reach, stance, dob,
+#                 slpm, str_acc, sapm, str_def,
+#                 td_avg, td_acc, td_def, sub_avg
+#             ) VALUES (
+#                 %(fighter_id)s, %(name)s, %(height)s, %(weight)s, %(reach)s, %(stance)s, %(dob)s,
+#                 %(slpm)s, %(str_acc)s, %(sapm)s, %(str_def)s,
+#                 %(td_avg)s, %(td_acc)s, %(td_def)s, %(sub_avg)s
+#             )
+#             ON CONFLICT (fighter_id) DO NOTHING;
+#         """, dict(item))
+#         print("INSERTED ITEM:", dict(item))
+#         return item

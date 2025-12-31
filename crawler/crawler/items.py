@@ -40,6 +40,8 @@ class FightItem(scrapy.Item):
     blue_fighter_id = scrapy.Field()
 
     # Outcome
+    red_status = scrapy.Field()
+    blue_status = scrapy.Field()
     result_type = scrapy.Field() # Win, Draw, NC
     winner_id = scrapy.Field()
     loser_id = scrapy.Field()
@@ -48,10 +50,9 @@ class FightItem(scrapy.Item):
     # Time and Rounds
     end_round = scrapy.Field()
     end_round_time = scrapy.Field()
-    end_round_time_seconds = scrapy.Field()
-    total_duration_seconds = scrapy.Field()
+    total_duration = scrapy.Field()
     rounds_scheduled = scrapy.Field()
-    time_scheduled_seconds = scrapy.Field()
+    time_scheduled = scrapy.Field()
 
     # Results
     method_raw = scrapy.Field()     ##

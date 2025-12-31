@@ -5,6 +5,7 @@ from scrapy.linkextractors import LinkExtractor
 from ..items import FighterItem, FightItem, EventItem, FighterFightItem
 from itemloaders.processors import MapCompose, TakeFirst
 from scrapy.loader import ItemLoader
+from ..loaders import BaseLoader, EventLoader, FightLoader
 
 class FighterSpider(scrapy.Spider):
     name = "fighters"
@@ -71,11 +72,15 @@ class FighterSpider(scrapy.Spider):
 
     # Get fields for EventItem
     def parse_event(self, response):
-        eventItem = EventItem()
-        eventItem["event_id"] = response.meta.get("event_id")
-        eventItem["event_name"] = response.xpath('normalize-space(//span[@class="b-content__title-highlight"]/text())').get()
-        eventItem["event_date"] = response.xpath('normalize-space(//li[contains(., "Date:")]/text()[last()])').get()
-        eventItem["event_location"] = response.xpath('normalize-space(//li[contains(., "Location:")]/text()[last()])').get()
+        eventLoader = EventLoader(item=EventItem(), response = response)
+        eventLoader.add_value('event_id', response.meta.get("event_id"))
+        eventLoader.add_xpath('event_name', 'normalize-space(//span[@class="b-content__title-highlight"]/text())')
+        eventLoader.add_xpath('event_date', 'normalize-space(//li[contains(., "Date:")]/text()[last()])')
+        eventLoader.add_xpath('event_location', 'normalize-space(//li[contains(., "Location:")]/text()[last()])')
+
+        yield eventLoader.load_item()
+        # print("EVENT ITEM:")
+        # print(dict(event026b4f7049085842Loader.load_item()))
 
         rows = response.xpath('//tr[contains(@class, "js-fight-details-click")]')
         for row in rows:
@@ -84,215 +89,49 @@ class FighterSpider(scrapy.Spider):
                 link,
                 callback=self.parse_fight,
                 meta={
-                    "event_id": eventItem["event_id"],
-                    "event_date": eventItem["event_date"],
+                    "event_id": eventLoader.get_output_value('event_id'),
+                    "event_date": eventLoader.get_output_value('event_date'),
                 }
             )
-        # print("EVENT ITEM:")
-        # print(dict(eventItem))
-        # yield eventItem
     
     # Get feields for FightItem
     def parse_fight(self, response):
-        fightItem = FightItem()
+        loader = FightLoader(item=FightItem(), response = response)
+        header_text = "".join(response.xpath("//i[contains(@class, 'fight-title')]//text()").getall())
 
-        # Fighter labels
-        red_fighter_name, blue_fighter_name = self.get_fighter_names(response)
-        red_fighter_id, blue_fighter_id = self.get_fighter_ids(response)
-        result_type, winner_id, loser_id, winner_color = self.get_winner_loser(response, red_fighter_id, blue_fighter_id)
-        weight_class = self.get_weight_class(response)
-        if "women" in weight_class.lower():
-            gender = "Women"
-        else:
-            gender = "Men"
-        title = self.is_title_fight(response)
-        event_id = response.meta.get("event_id")
-        event_date = response.meta.get("event_date")
-        
-        # Identity labels
-        self.populate_identity(response, fightItem,red_fighter_id, red_fighter_name, 
-                               blue_fighter_id, blue_fighter_name, winner_id, loser_id, 
-                               result_type, winner_color, weight_class, event_id, event_date, 
-                               gender, title)
-        
-        # Time and Round labels
-        self.populate_time_details(fightItem, response)
+        loader.add_value('fight_id', response.url.split("/")[-1])
+        loader.add_value('event_id', response.meta.get('event_id'))
+        loader.add_value('event_date', response.meta.get('event_date'))
+        loader.add_value('weight_class', header_text)
+        loader.add_value('is_title_fight', header_text)
+        loader.add_value('gender', header_text)
 
-        # Result labels
-        self.populate_result_details(fightItem, result_type, response)
+        # Identity
+        loader.add_xpath('red_fighter_id', "(//div[@class='b-fight-details__person']//a/@href)[1]")
+        loader.add_xpath('blue_fighter_id', "(//div[@class='b-fight-details__person']//a/@href)[2]")
+        loader.add_xpath('red_fighter_name', '(//div[@class="b-fight-details__person-text"]//a/text())[1]')
+        loader.add_xpath('blue_fighter_name', '(//div[@class="b-fight-details__person-text"]//a/text())[2]')
+        loader.add_xpath('red_status', "(//i[contains(@class, 'person-status')])[1]/text()")
+        loader.add_xpath('blue_status', "(//i[contains(@class, 'person-status')])[2]/text()")
+        loader.add_value('winner_id', None)
+        loader.add_value('loser_id', None)
+        loader.add_value('result_type', None)
+        loader.add_value('winner_color', None)       
 
+        # Time and Rounds
+        loader.add_xpath('end_round', "//i[contains(text(),'Round')]/following-sibling::text()")
+        loader.add_xpath('end_round_time', "normalize-space(//i[contains(text(),'Time')]/following-sibling::text()[1])")
+        loader.add_xpath('rounds_scheduled', "normalize-space(//i[i[contains(text(),'Time format')]]/text()[last()])")
+        loader.add_xpath('referee', "//i[contains(text(),'Referee')]/following-sibling::span/text()")
+        loader.add_value('time_scheduled', None)
+        loader.add_value('total_duration', None)
 
-        print("FIGHT ITEM:")
-        print(dict(fightItem))
-        yield fightItem
+        # Results
+        loader.add_xpath('method_raw', "//i[contains(text(),'Method')]/following-sibling::i/text()")
+        loader.add_value('finish_type', None)
+        loader.add_value('decision_type', None)
 
-    def populate_result_details(self, fightItem, result_type, response):
-        method_raw = response.xpath("//i[contains(text(),'Method')]/following-sibling::i/text()").get(default="").strip()
-        fightItem["method_raw"] = method_raw
-        # 2. Extract detail (e.g., Unanimous, Split, Rear Naked Choke)
-        # This is usually in the second <i> or a separate paragraph
-        detail_raw = response.xpath("//i[contains(text(),'Method')]/following-sibling::p/text()").get(default="").strip()
-
-        # Normalize for comparison
-        method_lower = method_raw.lower()
-
-        # 3. Handle Non-Wins (Draw, NC)
-        if result_type == "NC":
-            fightItem["finish_type"] = result_type
-            fightItem["decision_type"] = None
-
-        elif result_type == "Draw":
-            fightItem["finish_type"] = result_type
-            fightItem["decision_type"] = self.determine_decision(method_lower)
-        
-        # 4. Handle Wins
-        else:
-            if "ko" in method_lower:
-                fightItem["finish_type"] = "KO/TKO"
-                fightItem["decision_type"] = None
-            elif "submission" in method_lower:
-                fightItem["finish_type"] = "SUB"
-                fightItem["decision_type"] = None
-            elif "decision" in method_lower:
-                fightItem["finish_type"] = "DEC"
-                fightItem["decision_type"] = self.determine_decision(method_lower)
-            elif "dq" in method_lower:
-                fightItem["finish_type"] = "DQ"
-                fightItem["decision_type"] = None
-            else:
-                fightItem["finish_type"] = "OTHER"
-                fightItem["decision_type"] = None
-
-    def determine_decision(self, text):
-        if "unanimous" in text:
-            return"U-DEC"
-        elif "split" in text:
-            return "S-DEC"
-        elif "majority" in text:
-            return "M-DEC"
-        else:
-            return "OTHER-DEC"
-    
-    # Convert time of format M:SS to seconds
-    def convert_seconds(self, text):
-        if not text:
-            return None
-        mm, ss = text.split(":")
-        return int(mm) * 60 + int(ss)
-
-    # Get number of rounds that were scheduled
-    def get_scheduled_rounds(self, text):
-        rounds = text.split()[0]
-        return int(rounds)
-    
-    # Get scheduled time in seconds
-    def get_time_scheduled_seconds(self, text):
-        return text * 5 * 60
-
-    # Populate fight result and time details
-    def populate_time_details(self, fightItem, response):
-        result_extractors = {
-            "end_round": ("//i[contains(text(),'Round')]/following-sibling::text()", "int"),
-            "end_round_time": ("//i[contains(text(),'Time')]/following-sibling::text()", "text"),
-            "rounds_scheduled": ("//i[i[contains(text(),'Time format')]]/text()[last()]", "format"),
-            "referee": ("//i[contains(text(),'Referee')]/following-sibling::span/text()", "text"),
-        }
-        
-        for label, (xpath, result_type) in result_extractors.items():
-            value = response.xpath(xpath).get(default="").strip()
-            if result_type == "int":
-                fightItem[label] = int(value) if value else None
-            elif result_type == "format":
-                fightItem[label] = self.get_scheduled_rounds(value)
-            else:
-                fightItem[label] = value
-
-        # Calculate time in seconds
-        fightItem['end_round_time_seconds'] = self.convert_seconds(fightItem["end_round_time"])
-        fightItem['time_scheduled_seconds'] = self.get_time_scheduled_seconds(fightItem['rounds_scheduled'])
-        fightItem['total_duration_seconds'] = (fightItem["end_round"] * 300) + fightItem['end_round_time_seconds'] - 300
-
-    # Obtain ids of red and blue fighters
-    def get_fighter_ids(self, response):
-        fighter_urls = response.xpath("//div[@class='b-fight-details__person']//a/@href").getall()
-        fighter_a_id = fighter_urls[0].split("/")[-1]
-        fighter_b_id = fighter_urls[1].split("/")[-1]
-
-        return fighter_a_id, fighter_b_id
-    
-    # Obtain names of red and blue fighters
-    def get_fighter_names(self, response):
-        fighter_names = response.xpath('//div[@class="b-fight-details__person-text"]//a/text()').getall()
-        return fighter_names[0].strip(), fighter_names[1].strip()
-
-    # Identify opponent fighter
-    def determine_opponent(self, current_name, red_name, red_id, blue_name, blue_id):
-        if current_name == red_name:
-            return blue_id, blue_name, 1
-        else:
-            return red_id, red_name, 2
-        
-    def get_weight_class(self, response):
-        for fight in response.css('i.b-fight-details__fight-title'):
-            full_text = "".join(fight.xpath('./text()').getall()).strip()
-            match = re.search(r'(?:UFC\s+)?(.+?)\s+(?:Title\s+)?Bout', full_text)
-            weight_class = match.group(1) if match else "Unknown"
-        return weight_class
-    
-    def is_title_fight(self, response):
-        header_text = "".join(response.xpath("//i[contains(@class, 'fight-title')]//text()").getall()).lower()
-        images = response.xpath("//i[contains(@class, 'fight-title')]//img/@src").getall()
-        has_title_text = 'title' in header_text
-        has_belt_icon = any('belt.png' in img for img in images)
-        if (has_title_text or has_belt_icon):
-            return 1
-        else:
-            return 0
-
-    # Fill fightItem with fields
-    def populate_identity(self, response, fightItem, red_fighter_id, red_fighter_name, blue_fighter_id, blue_fighter_name, winner_id, loser_id, result_type, winner_color, weight_class, event_id, event_date, gender, title):
-        fightItem["fight_id"] = response.url.split("/")[-1]
-        fightItem["red_fighter_name"] = red_fighter_name
-        fightItem["red_fighter_id"] = red_fighter_id
-        fightItem["blue_fighter_name"] = blue_fighter_name
-        fightItem["blue_fighter_id"] = blue_fighter_id
-        fightItem["winner_id"] = winner_id
-        fightItem["loser_id"] = loser_id
-        fightItem["result_type"] = result_type
-        fightItem["winner_color"] = winner_color
-        fightItem["weight_class"] = weight_class
-        fightItem["event_id"] = event_id
-        fightItem["event_date"] = event_date
-        fightItem["gender"] = gender
-        fightItem["is_title_fight"] = title
-
-    def get_winner_loser(self, response, red_fighter_id, blue_fighter_id):
-        raw = response.xpath("//i[contains(@class, 'b-fight-details__person-status')]/text()").get()
-        if not raw:
-            return None
-        value = raw.strip()
-        if value == "W":
-            winner_id = red_fighter_id
-            loser_id = blue_fighter_id
-            result_type = "Win"
-            winner_color = "Red"
-        if value == "L":
-            winner_id = blue_fighter_id
-            loser_id = red_fighter_id
-            result_type = "Win"
-            winner_color = "Blue"
-        elif value == "NC":
-            winner_id = None
-            loser_id = None
-            result_type = "NC"
-            winner_color = None
-        elif value == "D":
-            winner_id = None
-            loser_id = None
-            result_type = "Draw"
-            winner_color = None
-
-        return result_type, winner_id, loser_id, winner_color
+        yield loader.load_item()
 
     # Extract a fighter stat with xpath
     def get_fighter_stat(self, label, response):

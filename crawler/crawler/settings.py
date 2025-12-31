@@ -62,10 +62,16 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = {
-#    "crawler.pipelines.PostgresPipeline": 300,
-#    "crawler.pipelines.CleanItemPipeline": 200,
-# }
+ITEM_PIPELINES = {
+  "crawler.pipelines.FightIdentityPipeline": 200,
+  "crawler.pipelines.FightTimePipeline": 201,
+  "crawler.pipelines.FightResultsPipeline": 202,
+  #  "crawler.pipelines.CleanItemPipeline": 200,
+  #  "crawler.pipelines.PostgresPipeline": 300,
+}
+
+# LOG_LEVEL = "INFO"
+
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
