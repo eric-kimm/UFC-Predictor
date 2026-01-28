@@ -1,0 +1,171 @@
+2026-01-17 23:26:00 [scrapy.utils.log] INFO: Scrapy 2.13.4 started (bot: crawler)
+2026-01-17 23:26:00 [scrapy.utils.log] INFO: Versions:
+{'lxml': '6.0.2',
+ 'libxml2': '2.14.6',
+ 'cssselect': '1.3.0',
+ 'parsel': '1.10.0',
+ 'w3lib': '2.3.1',
+ 'Twisted': '25.5.0',
+ 'Python': '3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, '
+           '11:23:37) [Clang 14.0.6 ]',
+ 'pyOpenSSL': '25.3.0 (OpenSSL 3.5.4 30 Sep 2025)',
+ 'cryptography': '46.0.3',
+ 'Platform': 'macOS-15.6.1-arm64-arm-64bit-Mach-O'}
+2026-01-17 23:26:00 [scrapy.addons] INFO: Enabled addons:
+[]
+2026-01-17 23:26:00 [scrapy.extensions.telnet] INFO: Telnet Password: fe47028424c85a3d
+2026-01-17 23:26:00 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats']
+2026-01-17 23:26:00 [scrapy.crawler] INFO: Overridden settings:
+{'BOT_NAME': 'crawler',
+ 'FEED_EXPORT_ENCODING': 'utf-8',
+ 'LOG_FILE': 'logs/ufc_scrape_2026-01-17_23-26-00.log',
+ 'LOG_LEVEL': 'INFO',
+ 'NEWSPIDER_MODULE': 'crawler.spiders',
+ 'ROBOTSTXT_OBEY': True,
+ 'SPIDER_MODULES': ['crawler.spiders']}
+2026-01-17 23:26:00 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2026-01-17 23:26:00 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.start.StartSpiderMiddleware',
+ 'scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2026-01-17 23:26:00 [scrapy.middleware] INFO: Enabled item pipelines:
+['crawler.pipelines.FightIdentityPipeline',
+ 'crawler.pipelines.FightTimePipeline',
+ 'crawler.pipelines.FightResultsPipeline',
+ 'crawler.pipelines.FighterPipeline',
+ 'crawler.pipelines.DateFormattingPipeline',
+ 'crawler.pipelines.FighterFightConvertPipeline',
+ 'crawler.pipelines.ValidationPipeline',
+ 'crawler.pipelines.EventLoggingPipeline',
+ 'crawler.pipelines.FighterLoggingPipeline',
+ 'crawler.pipelines.FightLoggingPipeline',
+ 'crawler.pipelines.FFCleanStatsPipeline',
+ 'crawler.pipelines.FFLoggingPipeline',
+ 'crawler.pipelines.PostgresPipeline']
+2026-01-17 23:26:00 [scrapy.core.engine] INFO: Spider opened
+2026-01-17 23:26:00 [py.warnings] WARNING: /Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/spidermw.py:433: ScrapyDeprecationWarning: crawler.spiders.fighter_spider.UfcSpider defines the deprecated start_requests() method. start_requests() has been deprecated in favor of a new method, start(), to support asynchronous code execution. start_requests() will stop being called in a future version of Scrapy. If you use Scrapy 2.13 or higher only, replace start_requests() with start(); note that start() is a coroutine (async def). If you need to maintain compatibility with lower Scrapy versions, when overriding start_requests() in a spider class, override start() as well; you can use super() to reuse the inherited start() implementation without copy-pasting. See the release notes of Scrapy 2.13 for details: https://docs.scrapy.org/en/2.13/news.html
+  warn(
+
+2026-01-17 23:26:00 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2026-01-17 23:26:00 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023
+2026-01-17 23:26:01 [scrapy.core.scraper] ERROR: Spider error processing <GET http://www.ufcstats.com/event-details/d26394fc0e8e880a> (referer: None)
+Traceback (most recent call last):
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/utils/defer.py", line 343, in iter_errback
+    yield next(it)
+          ~~~~^^^^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/utils/python.py", line 369, in __next__
+    return next(self.data)
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/utils/python.py", line 369, in __next__
+    return next(self.data)
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/spidermw.py", line 167, in process_sync
+    yield from iterable
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/spidermiddlewares/base.py", line 58, in process_spider_output
+    for o in result:
+             ^^^^^^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/spidermw.py", line 167, in process_sync
+    yield from iterable
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/spidermiddlewares/base.py", line 58, in process_spider_output
+    for o in result:
+             ^^^^^^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/spidermw.py", line 167, in process_sync
+    yield from iterable
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/spidermiddlewares/base.py", line 58, in process_spider_output
+    for o in result:
+             ^^^^^^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/spidermw.py", line 167, in process_sync
+    yield from iterable
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/spidermiddlewares/depth.py", line 59, in process_spider_output
+    yield from super().process_spider_output(response, result, spider)
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/spidermiddlewares/base.py", line 58, in process_spider_output
+    for o in result:
+             ^^^^^^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/spidermw.py", line 167, in process_sync
+    yield from iterable
+  File "/Users/erickim/Desktop/ufc/data/crawler/spiders/fighter_spider.py", line 158, in parse_event
+    "weight_class": weight_class
+                    ^^^^^^^^^^^^
+NameError: name 'weight_class' is not defined. Did you mean: 'weight_coass'?
+2026-01-17 23:26:01 [scrapy.core.scraper] ERROR: Error processing {'location': 'Las Vegas, Nevada, USA'}
+Traceback (most recent call last):
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/scraper.py", line 387, in start_itemproc
+    output = await maybe_deferred_to_future(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.itemproc.process_item(item, self.crawler.spider)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/twisted/internet/defer.py", line 1092, in _runCallbacks
+    current.result = callback(  # type: ignore[misc]
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+        current.result, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/utils/defer.py", line 407, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+                              ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 292, in process_item
+    self._validate_event(item)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 365, in _validate_event
+    self._check_required_fields(item, required, 'EventItem')
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 409, in _check_required_fields
+    raise ValueError(f"{item_type}: required field '{field}' is missing or empty")
+ValueError: EventItem: required field 'event_id' is missing or empty
+2026-01-17 23:26:01 [FighterLogger] INFO: {'fighter_id': 'd3df1add9d9a7efb', 'name': 'Derrick Lewis', 'height': 75, 'weight': 260, 'reach': 79, 'stance': 'Orthodox', 'dob': '1985-02-07'}
+2026-01-17 23:26:02 [FighterLogger] INFO: {'fighter_id': 'e2f6b2769aaedd6c', 'name': 'Serghei Spivac', 'height': 75, 'weight': 260, 'reach': 78, 'stance': 'Orthodox', 'dob': '1995-01-24'}
+2026-01-17 23:26:02 [scrapy.core.engine] INFO: Closing spider (finished)
+2026-01-17 23:26:02 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 1102,
+ 'downloader/request_count': 4,
+ 'downloader/request_method_count/GET': 4,
+ 'downloader/response_bytes': 18531,
+ 'downloader/response_count': 4,
+ 'downloader/response_status_count/200': 3,
+ 'downloader/response_status_count/404': 1,
+ 'elapsed_time_seconds': 1.574001,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2026, 1, 18, 7, 26, 2, 394999, tzinfo=datetime.timezone.utc),
+ 'httpcompression/response_bytes': 205733,
+ 'httpcompression/response_count': 3,
+ 'item_scraped_count': 2,
+ 'items_per_minute': 120.0,
+ 'log_count/ERROR': 2,
+ 'log_count/INFO': 12,
+ 'log_count/WARNING': 1,
+ 'memusage/max': 74252288,
+ 'memusage/startup': 74252288,
+ 'request_depth_max': 1,
+ 'response_received_count': 4,
+ 'responses_per_minute': 240.0,
+ 'robotstxt/request_count': 1,
+ 'robotstxt/response_count': 1,
+ 'robotstxt/response_status_count/404': 1,
+ 'scheduler/dequeued': 3,
+ 'scheduler/dequeued/memory': 3,
+ 'scheduler/enqueued': 3,
+ 'scheduler/enqueued/memory': 3,
+ 'spider_exceptions/NameError': 1,
+ 'spider_exceptions/count': 1,
+ 'start_time': datetime.datetime(2026, 1, 18, 7, 26, 0, 820998, tzinfo=datetime.timezone.utc)}
+2026-01-17 23:26:02 [scrapy.core.engine] INFO: Spider closed (finished)

@@ -1,0 +1,1494 @@
+2026-01-17 23:42:23 [scrapy.utils.log] INFO: Scrapy 2.13.4 started (bot: crawler)
+2026-01-17 23:42:23 [scrapy.utils.log] INFO: Versions:
+{'lxml': '6.0.2',
+ 'libxml2': '2.14.6',
+ 'cssselect': '1.3.0',
+ 'parsel': '1.10.0',
+ 'w3lib': '2.3.1',
+ 'Twisted': '25.5.0',
+ 'Python': '3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, '
+           '11:23:37) [Clang 14.0.6 ]',
+ 'pyOpenSSL': '25.3.0 (OpenSSL 3.5.4 30 Sep 2025)',
+ 'cryptography': '46.0.3',
+ 'Platform': 'macOS-15.6.1-arm64-arm-64bit-Mach-O'}
+2026-01-17 23:42:23 [scrapy.addons] INFO: Enabled addons:
+[]
+2026-01-17 23:42:23 [scrapy.extensions.telnet] INFO: Telnet Password: 0404639100cd9aac
+2026-01-17 23:42:23 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats']
+2026-01-17 23:42:23 [scrapy.crawler] INFO: Overridden settings:
+{'BOT_NAME': 'crawler',
+ 'FEED_EXPORT_ENCODING': 'utf-8',
+ 'LOG_FILE': 'logs/ufc_scrape_2026-01-17_23-42-23.log',
+ 'LOG_LEVEL': 'INFO',
+ 'NEWSPIDER_MODULE': 'crawler.spiders',
+ 'ROBOTSTXT_OBEY': True,
+ 'SPIDER_MODULES': ['crawler.spiders']}
+2026-01-17 23:42:23 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2026-01-17 23:42:23 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.start.StartSpiderMiddleware',
+ 'scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2026-01-17 23:42:23 [scrapy.middleware] INFO: Enabled item pipelines:
+['crawler.pipelines.FightIdentityPipeline',
+ 'crawler.pipelines.FightTimePipeline',
+ 'crawler.pipelines.FightResultsPipeline',
+ 'crawler.pipelines.FighterPipeline',
+ 'crawler.pipelines.DateFormattingPipeline',
+ 'crawler.pipelines.FighterFightConvertPipeline',
+ 'crawler.pipelines.ValidationPipeline',
+ 'crawler.pipelines.EventLoggingPipeline',
+ 'crawler.pipelines.FighterLoggingPipeline',
+ 'crawler.pipelines.FightLoggingPipeline',
+ 'crawler.pipelines.FFCleanStatsPipeline',
+ 'crawler.pipelines.FFLoggingPipeline',
+ 'crawler.pipelines.PostgresPipeline']
+2026-01-17 23:42:23 [scrapy.core.engine] INFO: Spider opened
+2026-01-17 23:42:23 [py.warnings] WARNING: /Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/spidermw.py:433: ScrapyDeprecationWarning: crawler.spiders.fighter_spider.UfcSpider defines the deprecated start_requests() method. start_requests() has been deprecated in favor of a new method, start(), to support asynchronous code execution. start_requests() will stop being called in a future version of Scrapy. If you use Scrapy 2.13 or higher only, replace start_requests() with start(); note that start() is a coroutine (async def). If you need to maintain compatibility with lower Scrapy versions, when overriding start_requests() in a spider class, override start() as well; you can use super() to reuse the inherited start() implementation without copy-pasting. See the release notes of Scrapy 2.13 for details: https://docs.scrapy.org/en/2.13/news.html
+  warn(
+
+2026-01-17 23:42:23 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2026-01-17 23:42:23 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023
+2026-01-17 23:42:23 [scrapy.core.scraper] ERROR: Error processing {'location': 'Las Vegas, Nevada, USA'}
+Traceback (most recent call last):
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/scraper.py", line 387, in start_itemproc
+    output = await maybe_deferred_to_future(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.itemproc.process_item(item, self.crawler.spider)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/twisted/internet/defer.py", line 1092, in _runCallbacks
+    current.result = callback(  # type: ignore[misc]
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+        current.result, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/utils/defer.py", line 407, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+                              ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 292, in process_item
+    self._validate_event(item)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 365, in _validate_event
+    self._check_required_fields(item, required, 'EventItem')
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 409, in _check_required_fields
+    raise ValueError(f"{item_type}: required field '{field}' is missing or empty")
+ValueError: EventItem: required field 'event_id' is missing or empty
+2026-01-17 23:42:24 [FighterLogger] INFO: {'fighter_id': '57186c150c645200', 'name': 'Jeka Saragih', 'height': 68, 'weight': 145, 'reach': 69, 'stance': 'Orthodox', 'dob': '1995-01-01'}
+2026-01-17 23:42:24 [FighterLogger] INFO: {'fighter_id': 'a72a2a769fa5a2be', 'name': 'Anshul Jubli', 'height': 72, 'weight': 155, 'reach': 69, 'stance': 'Switch', 'dob': '1995-01-13'}
+2026-01-17 23:42:24 [FighterLogger] INFO: {'fighter_id': '1788eee370f077b7', 'name': 'Blagoy Ivanov', 'height': 71, 'weight': 250, 'reach': 73, 'stance': 'Southpaw', 'dob': '1986-10-09'}
+2026-01-17 23:42:24 [FighterLogger] INFO: {'fighter_id': 'c9cf753cfdf77fc2', 'name': 'Marcin Tybura', 'height': 75, 'weight': 246, 'reach': 78, 'stance': 'Orthodox', 'dob': '1985-11-09'}
+2026-01-17 23:42:24 [FighterLogger] INFO: {'fighter_id': 'e93b04e308913c2e', 'name': 'Dooho Choi', 'height': 70, 'weight': 145, 'reach': 70, 'stance': 'Orthodox', 'dob': '1991-04-10'}
+2026-01-17 23:42:24 [FighterLogger] INFO: {'fighter_id': 'a01a62132460a98d', 'name': 'Adam Fugitt', 'height': 73, 'weight': 170, 'reach': 77, 'stance': 'Southpaw', 'dob': '1989-01-12'}
+2026-01-17 23:42:24 [FighterLogger] INFO: {'fighter_id': '74f9448b97bf8bec', 'name': 'Da Woon Jung', 'height': 76, 'weight': 205, 'reach': 78, 'stance': 'Orthodox', 'dob': '1993-12-07'}
+2026-01-17 23:42:24 [FighterLogger] INFO: {'fighter_id': 'd3df1add9d9a7efb', 'name': 'Derrick Lewis', 'height': 75, 'weight': 260, 'reach': 79, 'stance': 'Orthodox', 'dob': '1985-02-07'}
+2026-01-17 23:42:24 [FighterLogger] INFO: {'fighter_id': '31f8081c7600da93', 'name': 'Kyle Nelson', 'height': 71, 'weight': 155, 'reach': 71, 'stance': 'Switch', 'dob': '1991-04-20'}
+2026-01-17 23:42:24 [FighterLogger] INFO: {'fighter_id': 'cc7040fe76f0ef91', 'name': 'Devin Clark', 'height': 72, 'weight': 205, 'reach': 75, 'stance': 'Orthodox', 'dob': '1990-04-12'}
+2026-01-17 23:42:24 [FighterLogger] INFO: {'fighter_id': '21b5c82c1b89dab1', 'name': 'Yusaku Kinoshita', 'height': 72, 'weight': 170, 'reach': 71, 'stance': 'Southpaw', 'dob': '2000-08-21'}
+2026-01-17 23:42:25 [FighterLogger] INFO: {'fighter_id': 'e2f6b2769aaedd6c', 'name': 'Serghei Spivac', 'height': 75, 'weight': 260, 'reach': 78, 'stance': 'Orthodox', 'dob': '1995-01-24'}
+2026-01-17 23:42:25 [scrapy.core.scraper] ERROR: Error processing {'blue_fighter_id': 'a01a62132460a98d',
+ 'blue_fighter_name': 'Adam Fugitt',
+ 'blue_status': 'W',
+ 'decision_type': None,
+ 'end_round': 1,
+ 'end_round_time': 276,
+ 'fight_id': 'c63d8062c89c4c33',
+ 'finish_type': 'KO/TKO',
+ 'gender': 'Men',
+ 'is_title_fight': False,
+ 'loser_id': '21b5c82c1b89dab1',
+ 'method_raw': 'KO/TKO',
+ 'red_fighter_id': '21b5c82c1b89dab1',
+ 'red_fighter_name': 'Yusaku Kinoshita',
+ 'red_status': 'L',
+ 'referee': 'Keith Peterson',
+ 'result_type': 'Win',
+ 'rounds_scheduled': 3,
+ 'time_scheduled': 900,
+ 'total_duration': 276,
+ 'weight_class': 'Welterweight',
+ 'winner_color': 'Blue',
+ 'winner_id': 'a01a62132460a98d'}
+Traceback (most recent call last):
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/scraper.py", line 387, in start_itemproc
+    output = await maybe_deferred_to_future(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.itemproc.process_item(item, self.crawler.spider)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/twisted/internet/defer.py", line 1092, in _runCallbacks
+    current.result = callback(  # type: ignore[misc]
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+        current.result, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/utils/defer.py", line 407, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+                              ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 290, in process_item
+    self._validate_fight(item)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 322, in _validate_fight
+    self._check_required_fields(item, required, 'FightItem')
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 409, in _check_required_fields
+    raise ValueError(f"{item_type}: required field '{field}' is missing or empty")
+ValueError: FightItem: required field 'event_id' is missing or empty
+2026-01-17 23:42:25 [FFLogger] INFO: {
+    "fight_id": "c63d8062c89c4c33",
+    "fighter_id": "21b5c82c1b89dab1",
+    "opponent_id": "a01a62132460a98d",
+    "knockdowns": 0,
+    "tot_str_raw": "11 of 25",
+    "td_raw": "0 of 1",
+    "sub_attempts": 0,
+    "reversals": 0,
+    "ctrl_time": 1,
+    "sig_str_raw": "10 of 24",
+    "head_str_raw": "6 of 20",
+    "body_str_raw": "1 of 1",
+    "leg_str_raw": "3 of 3",
+    "distance_str_raw": "10 of 24",
+    "clinch_str_raw": "0 of 0",
+    "ground_str_raw": "0 of 0",
+    "sig_str_landed": 10,
+    "sig_str_attempted": 24,
+    "tot_str_landed": 11,
+    "tot_str_attempted": 25,
+    "td_landed": 0,
+    "td_attempted": 1,
+    "head_str_landed": 6,
+    "head_str_attempted": 20,
+    "body_str_landed": 1,
+    "body_str_attempted": 1,
+    "leg_str_landed": 3,
+    "leg_str_attempted": 3,
+    "distance_str_landed": 10,
+    "distance_str_attempted": 24,
+    "clinch_str_landed": 0,
+    "clinch_str_attempted": 0,
+    "ground_str_landed": 0,
+    "ground_str_attempted": 0
+}
+2026-01-17 23:42:25 [FFLogger] INFO: {
+    "fight_id": "c63d8062c89c4c33",
+    "fighter_id": "a01a62132460a98d",
+    "opponent_id": "21b5c82c1b89dab1",
+    "knockdowns": 0,
+    "tot_str_raw": "33 of 54",
+    "td_raw": "4 of 7",
+    "sub_attempts": 0,
+    "reversals": 0,
+    "ctrl_time": 173,
+    "sig_str_raw": "21 of 33",
+    "head_str_raw": "16 of 23",
+    "body_str_raw": "4 of 7",
+    "leg_str_raw": "1 of 3",
+    "distance_str_raw": "11 of 22",
+    "clinch_str_raw": "4 of 4",
+    "ground_str_raw": "6 of 7",
+    "sig_str_landed": 21,
+    "sig_str_attempted": 33,
+    "tot_str_landed": 33,
+    "tot_str_attempted": 54,
+    "td_landed": 4,
+    "td_attempted": 7,
+    "head_str_landed": 16,
+    "head_str_attempted": 23,
+    "body_str_landed": 4,
+    "body_str_attempted": 7,
+    "leg_str_landed": 1,
+    "leg_str_attempted": 3,
+    "distance_str_landed": 11,
+    "distance_str_attempted": 22,
+    "clinch_str_landed": 4,
+    "clinch_str_attempted": 4,
+    "ground_str_landed": 6,
+    "ground_str_attempted": 7
+}
+2026-01-17 23:42:25 [scrapy.core.scraper] ERROR: Error processing {'blue_fighter_id': '1788eee370f077b7',
+ 'blue_fighter_name': 'Blagoy Ivanov',
+ 'blue_status': 'L',
+ 'decision_type': 'U-DEC',
+ 'end_round': 3,
+ 'end_round_time': 300,
+ 'fight_id': '8741e6a3a5a22a7f',
+ 'finish_type': 'DEC',
+ 'gender': 'Men',
+ 'is_title_fight': False,
+ 'loser_id': '1788eee370f077b7',
+ 'method_raw': 'Decision - Unanimous',
+ 'red_fighter_id': 'c9cf753cfdf77fc2',
+ 'red_fighter_name': 'Marcin Tybura',
+ 'red_status': 'W',
+ 'referee': 'Mark Smith',
+ 'result_type': 'Win',
+ 'rounds_scheduled': 3,
+ 'time_scheduled': 900,
+ 'total_duration': 900,
+ 'weight_class': 'Heavyweight',
+ 'winner_color': 'Red',
+ 'winner_id': 'c9cf753cfdf77fc2'}
+Traceback (most recent call last):
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/scraper.py", line 387, in start_itemproc
+    output = await maybe_deferred_to_future(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.itemproc.process_item(item, self.crawler.spider)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/twisted/internet/defer.py", line 1092, in _runCallbacks
+    current.result = callback(  # type: ignore[misc]
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+        current.result, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/utils/defer.py", line 407, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+                              ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 290, in process_item
+    self._validate_fight(item)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 322, in _validate_fight
+    self._check_required_fields(item, required, 'FightItem')
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 409, in _check_required_fields
+    raise ValueError(f"{item_type}: required field '{field}' is missing or empty")
+ValueError: FightItem: required field 'event_id' is missing or empty
+2026-01-17 23:42:25 [FFLogger] INFO: {
+    "fight_id": "8741e6a3a5a22a7f",
+    "fighter_id": "c9cf753cfdf77fc2",
+    "opponent_id": "1788eee370f077b7",
+    "knockdowns": 0,
+    "tot_str_raw": "61 of 133",
+    "td_raw": "1 of 1",
+    "sub_attempts": 0,
+    "reversals": 0,
+    "ctrl_time": 295,
+    "sig_str_raw": "40 of 103",
+    "head_str_raw": "12 of 70",
+    "body_str_raw": "19 of 24",
+    "leg_str_raw": "9 of 9",
+    "distance_str_raw": "39 of 102",
+    "clinch_str_raw": "0 of 0",
+    "ground_str_raw": "1 of 1",
+    "sig_str_landed": 40,
+    "sig_str_attempted": 103,
+    "tot_str_landed": 61,
+    "tot_str_attempted": 133,
+    "td_landed": 1,
+    "td_attempted": 1,
+    "head_str_landed": 12,
+    "head_str_attempted": 70,
+    "body_str_landed": 19,
+    "body_str_attempted": 24,
+    "leg_str_landed": 9,
+    "leg_str_attempted": 9,
+    "distance_str_landed": 39,
+    "distance_str_attempted": 102,
+    "clinch_str_landed": 0,
+    "clinch_str_attempted": 0,
+    "ground_str_landed": 1,
+    "ground_str_attempted": 1
+}
+2026-01-17 23:42:25 [FFLogger] INFO: {
+    "fight_id": "8741e6a3a5a22a7f",
+    "fighter_id": "1788eee370f077b7",
+    "opponent_id": "c9cf753cfdf77fc2",
+    "knockdowns": 0,
+    "tot_str_raw": "34 of 113",
+    "td_raw": "0 of 0",
+    "sub_attempts": 0,
+    "reversals": 0,
+    "ctrl_time": 0,
+    "sig_str_raw": "34 of 113",
+    "head_str_raw": "24 of 98",
+    "body_str_raw": "10 of 15",
+    "leg_str_raw": "0 of 0",
+    "distance_str_raw": "34 of 112",
+    "clinch_str_raw": "0 of 1",
+    "ground_str_raw": "0 of 0",
+    "sig_str_landed": 34,
+    "sig_str_attempted": 113,
+    "tot_str_landed": 34,
+    "tot_str_attempted": 113,
+    "td_landed": 0,
+    "td_attempted": 0,
+    "head_str_landed": 24,
+    "head_str_attempted": 98,
+    "body_str_landed": 10,
+    "body_str_attempted": 15,
+    "leg_str_landed": 0,
+    "leg_str_attempted": 0,
+    "distance_str_landed": 34,
+    "distance_str_attempted": 112,
+    "clinch_str_landed": 0,
+    "clinch_str_attempted": 1,
+    "ground_str_landed": 0,
+    "ground_str_attempted": 0
+}
+2026-01-17 23:42:25 [FighterLogger] INFO: {'fighter_id': 'c051c2e12d692b8a', 'name': 'Jesus Aguilar', 'height': 64, 'weight': 125, 'reach': 62, 'stance': 'Orthodox', 'dob': '1996-03-13'}
+2026-01-17 23:42:25 [scrapy.core.scraper] ERROR: Error processing {'blue_fighter_id': '31f8081c7600da93',
+ 'blue_fighter_name': 'Kyle Nelson',
+ 'blue_status': 'D',
+ 'decision_type': 'M-DEC',
+ 'end_round': 3,
+ 'end_round_time': 300,
+ 'fight_id': '01e8868086004dd8',
+ 'finish_type': 'Draw',
+ 'gender': 'Men',
+ 'is_title_fight': False,
+ 'loser_id': None,
+ 'method_raw': 'Decision - Majority',
+ 'red_fighter_id': 'e93b04e308913c2e',
+ 'red_fighter_name': 'Dooho Choi',
+ 'red_status': 'D',
+ 'referee': 'Chris Tognoni',
+ 'result_type': 'Draw',
+ 'rounds_scheduled': 3,
+ 'time_scheduled': 900,
+ 'total_duration': 900,
+ 'weight_class': 'Featherweight',
+ 'winner_color': None,
+ 'winner_id': None}
+Traceback (most recent call last):
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/scraper.py", line 387, in start_itemproc
+    output = await maybe_deferred_to_future(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.itemproc.process_item(item, self.crawler.spider)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/twisted/internet/defer.py", line 1092, in _runCallbacks
+    current.result = callback(  # type: ignore[misc]
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+        current.result, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/utils/defer.py", line 407, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+                              ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 290, in process_item
+    self._validate_fight(item)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 322, in _validate_fight
+    self._check_required_fields(item, required, 'FightItem')
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 409, in _check_required_fields
+    raise ValueError(f"{item_type}: required field '{field}' is missing or empty")
+ValueError: FightItem: required field 'event_id' is missing or empty
+2026-01-17 23:42:25 [FFLogger] INFO: {
+    "fight_id": "01e8868086004dd8",
+    "fighter_id": "e93b04e308913c2e",
+    "opponent_id": "31f8081c7600da93",
+    "knockdowns": 0,
+    "tot_str_raw": "79 of 114",
+    "td_raw": "0 of 0",
+    "sub_attempts": 0,
+    "reversals": 1,
+    "ctrl_time": 238,
+    "sig_str_raw": "50 of 78",
+    "head_str_raw": "11 of 37",
+    "body_str_raw": "23 of 24",
+    "leg_str_raw": "16 of 17",
+    "distance_str_raw": "27 of 54",
+    "clinch_str_raw": "2 of 2",
+    "ground_str_raw": "21 of 22",
+    "sig_str_landed": 50,
+    "sig_str_attempted": 78,
+    "tot_str_landed": 79,
+    "tot_str_attempted": 114,
+    "td_landed": 0,
+    "td_attempted": 0,
+    "head_str_landed": 11,
+    "head_str_attempted": 37,
+    "body_str_landed": 23,
+    "body_str_attempted": 24,
+    "leg_str_landed": 16,
+    "leg_str_attempted": 17,
+    "distance_str_landed": 27,
+    "distance_str_attempted": 54,
+    "clinch_str_landed": 2,
+    "clinch_str_attempted": 2,
+    "ground_str_landed": 21,
+    "ground_str_attempted": 22
+}
+2026-01-17 23:42:25 [FFLogger] INFO: {
+    "fight_id": "01e8868086004dd8",
+    "fighter_id": "31f8081c7600da93",
+    "opponent_id": "e93b04e308913c2e",
+    "knockdowns": 0,
+    "tot_str_raw": "39 of 80",
+    "td_raw": "5 of 10",
+    "sub_attempts": 0,
+    "reversals": 0,
+    "ctrl_time": 334,
+    "sig_str_raw": "20 of 58",
+    "head_str_raw": "10 of 41",
+    "body_str_raw": "7 of 10",
+    "leg_str_raw": "3 of 7",
+    "distance_str_raw": "17 of 54",
+    "clinch_str_raw": "3 of 4",
+    "ground_str_raw": "0 of 0",
+    "sig_str_landed": 20,
+    "sig_str_attempted": 58,
+    "tot_str_landed": 39,
+    "tot_str_attempted": 80,
+    "td_landed": 5,
+    "td_attempted": 10,
+    "head_str_landed": 10,
+    "head_str_attempted": 41,
+    "body_str_landed": 7,
+    "body_str_attempted": 10,
+    "leg_str_landed": 3,
+    "leg_str_attempted": 7,
+    "distance_str_landed": 17,
+    "distance_str_attempted": 54,
+    "clinch_str_landed": 3,
+    "clinch_str_attempted": 4,
+    "ground_str_landed": 0,
+    "ground_str_attempted": 0
+}
+2026-01-17 23:42:25 [FighterLogger] INFO: {'fighter_id': '4461d7e47375a895', 'name': 'Tatsuro Taira', 'height': 67, 'weight': 125, 'reach': 70, 'stance': 'Orthodox', 'dob': '2000-01-27'}
+2026-01-17 23:42:25 [FighterLogger] INFO: {'fighter_id': 'adccbc19b22e19af', 'name': 'SeungGuk Choi', 'height': 66, 'weight': 125, 'reach': 64, 'stance': 'Orthodox', 'dob': '1996-12-26'}
+2026-01-17 23:42:25 [scrapy.core.scraper] ERROR: Error processing {'blue_fighter_id': 'a72a2a769fa5a2be',
+ 'blue_fighter_name': 'Anshul Jubli',
+ 'blue_status': 'W',
+ 'decision_type': None,
+ 'end_round': 2,
+ 'end_round_time': 224,
+ 'fight_id': 'b1b20c686dfe3204',
+ 'finish_type': 'KO/TKO',
+ 'gender': 'Men',
+ 'is_title_fight': True,
+ 'loser_id': '57186c150c645200',
+ 'method_raw': 'KO/TKO',
+ 'red_fighter_id': '57186c150c645200',
+ 'red_fighter_name': 'Jeka Saragih',
+ 'red_status': 'L',
+ 'referee': 'Marc Goddard',
+ 'result_type': 'Win',
+ 'rounds_scheduled': 3,
+ 'time_scheduled': 900,
+ 'total_duration': 524,
+ 'weight_class': 'Lightweight',
+ 'winner_color': 'Blue',
+ 'winner_id': 'a72a2a769fa5a2be'}
+Traceback (most recent call last):
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/scraper.py", line 387, in start_itemproc
+    output = await maybe_deferred_to_future(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.itemproc.process_item(item, self.crawler.spider)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/twisted/internet/defer.py", line 1092, in _runCallbacks
+    current.result = callback(  # type: ignore[misc]
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+        current.result, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/utils/defer.py", line 407, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+                              ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 290, in process_item
+    self._validate_fight(item)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 322, in _validate_fight
+    self._check_required_fields(item, required, 'FightItem')
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 409, in _check_required_fields
+    raise ValueError(f"{item_type}: required field '{field}' is missing or empty")
+ValueError: FightItem: required field 'event_id' is missing or empty
+2026-01-17 23:42:25 [FFLogger] INFO: {
+    "fight_id": "b1b20c686dfe3204",
+    "fighter_id": "57186c150c645200",
+    "opponent_id": "a72a2a769fa5a2be",
+    "knockdowns": 0,
+    "tot_str_raw": "20 of 40",
+    "td_raw": "0 of 0",
+    "sub_attempts": 0,
+    "reversals": 0,
+    "ctrl_time": 9,
+    "sig_str_raw": "14 of 25",
+    "head_str_raw": "2 of 10",
+    "body_str_raw": "3 of 4",
+    "leg_str_raw": "9 of 11",
+    "distance_str_raw": "10 of 20",
+    "clinch_str_raw": "2 of 3",
+    "ground_str_raw": "2 of 2",
+    "sig_str_landed": 14,
+    "sig_str_attempted": 25,
+    "tot_str_landed": 20,
+    "tot_str_attempted": 40,
+    "td_landed": 0,
+    "td_attempted": 0,
+    "head_str_landed": 2,
+    "head_str_attempted": 10,
+    "body_str_landed": 3,
+    "body_str_attempted": 4,
+    "leg_str_landed": 9,
+    "leg_str_attempted": 11,
+    "distance_str_landed": 10,
+    "distance_str_attempted": 20,
+    "clinch_str_landed": 2,
+    "clinch_str_attempted": 3,
+    "ground_str_landed": 2,
+    "ground_str_attempted": 2
+}
+2026-01-17 23:42:25 [FFLogger] INFO: {
+    "fight_id": "b1b20c686dfe3204",
+    "fighter_id": "a72a2a769fa5a2be",
+    "opponent_id": "57186c150c645200",
+    "knockdowns": 0,
+    "tot_str_raw": "74 of 99",
+    "td_raw": "2 of 5",
+    "sub_attempts": 1,
+    "reversals": 0,
+    "ctrl_time": 427,
+    "sig_str_raw": "38 of 51",
+    "head_str_raw": "36 of 47",
+    "body_str_raw": "1 of 3",
+    "leg_str_raw": "1 of 1",
+    "distance_str_raw": "6 of 14",
+    "clinch_str_raw": "0 of 0",
+    "ground_str_raw": "32 of 37",
+    "sig_str_landed": 38,
+    "sig_str_attempted": 51,
+    "tot_str_landed": 74,
+    "tot_str_attempted": 99,
+    "td_landed": 2,
+    "td_attempted": 5,
+    "head_str_landed": 36,
+    "head_str_attempted": 47,
+    "body_str_landed": 1,
+    "body_str_attempted": 3,
+    "leg_str_landed": 1,
+    "leg_str_attempted": 1,
+    "distance_str_landed": 6,
+    "distance_str_attempted": 14,
+    "clinch_str_landed": 0,
+    "clinch_str_attempted": 0,
+    "ground_str_landed": 32,
+    "ground_str_attempted": 37
+}
+2026-01-17 23:42:25 [FighterLogger] INFO: {'fighter_id': '0112352cb32f5026', 'name': 'Denis Tiuliulin', 'height': 73, 'weight': 185, 'reach': 77, 'stance': 'Orthodox', 'dob': '1988-05-17'}
+2026-01-17 23:42:25 [FighterLogger] INFO: {'fighter_id': '3f11fd1751fa83b1', 'name': 'Yizha', 'height': 67, 'weight': 145, 'reach': 71, 'stance': 'Orthodox', 'dob': '1997-01-08'}
+2026-01-17 23:42:25 [FighterLogger] INFO: {'fighter_id': 'd8c811df0386d5e8', 'name': 'Rinya Nakamura', 'height': 67, 'weight': 135, 'reach': 68, 'stance': 'Southpaw', 'dob': '1995-03-23'}
+2026-01-17 23:42:25 [FighterLogger] INFO: {'fighter_id': 'b671bdf981ad527d', 'name': 'HyunSung Park', 'height': 67, 'weight': 125, 'reach': 66, 'stance': 'Orthodox', 'dob': '1995-11-04'}
+2026-01-17 23:42:25 [FighterLogger] INFO: {'fighter_id': 'd008d785f6347dc2', 'name': 'JeongYeong Lee', 'height': 70, 'weight': 145, 'reach': 73, 'stance': 'Orthodox', 'dob': '1995-11-13'}
+2026-01-17 23:42:25 [FighterLogger] INFO: {'fighter_id': '285ae0b4a68221f4', 'name': 'JunYong Park', 'height': 70, 'weight': 185, 'reach': 73, 'stance': 'Orthodox', 'dob': '1991-02-27'}
+2026-01-17 23:42:25 [FighterLogger] INFO: {'fighter_id': '148bb103cfbf123e', 'name': 'Toshiomi Kazama', 'height': 67, 'weight': 135, 'reach': 69, 'stance': 'Orthodox', 'dob': '1997-05-15'}
+2026-01-17 23:42:26 [scrapy.core.scraper] ERROR: Error processing {'blue_fighter_id': '0112352cb32f5026',
+ 'blue_fighter_name': 'Denis Tiuliulin',
+ 'blue_status': 'L',
+ 'decision_type': None,
+ 'end_round': 1,
+ 'end_round_time': 245,
+ 'fight_id': '983fab4080743ed0',
+ 'finish_type': 'SUB',
+ 'gender': 'Men',
+ 'is_title_fight': False,
+ 'loser_id': '0112352cb32f5026',
+ 'method_raw': 'Submission',
+ 'red_fighter_id': '285ae0b4a68221f4',
+ 'red_fighter_name': 'JunYong Park',
+ 'red_status': 'W',
+ 'referee': 'Mark Smith',
+ 'result_type': 'Win',
+ 'rounds_scheduled': 3,
+ 'time_scheduled': 900,
+ 'total_duration': 245,
+ 'weight_class': 'Middleweight',
+ 'winner_color': 'Red',
+ 'winner_id': '285ae0b4a68221f4'}
+Traceback (most recent call last):
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/scraper.py", line 387, in start_itemproc
+    output = await maybe_deferred_to_future(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.itemproc.process_item(item, self.crawler.spider)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/twisted/internet/defer.py", line 1092, in _runCallbacks
+    current.result = callback(  # type: ignore[misc]
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+        current.result, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/utils/defer.py", line 407, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+                              ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 290, in process_item
+    self._validate_fight(item)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 322, in _validate_fight
+    self._check_required_fields(item, required, 'FightItem')
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 409, in _check_required_fields
+    raise ValueError(f"{item_type}: required field '{field}' is missing or empty")
+ValueError: FightItem: required field 'event_id' is missing or empty
+2026-01-17 23:42:26 [FFLogger] INFO: {
+    "fight_id": "983fab4080743ed0",
+    "fighter_id": "285ae0b4a68221f4",
+    "opponent_id": "0112352cb32f5026",
+    "knockdowns": 0,
+    "tot_str_raw": "38 of 52",
+    "td_raw": "1 of 3",
+    "sub_attempts": 1,
+    "reversals": 0,
+    "ctrl_time": 178,
+    "sig_str_raw": "25 of 38",
+    "head_str_raw": "20 of 33",
+    "body_str_raw": "1 of 1",
+    "leg_str_raw": "4 of 4",
+    "distance_str_raw": "15 of 27",
+    "clinch_str_raw": "0 of 0",
+    "ground_str_raw": "10 of 11",
+    "sig_str_landed": 25,
+    "sig_str_attempted": 38,
+    "tot_str_landed": 38,
+    "tot_str_attempted": 52,
+    "td_landed": 1,
+    "td_attempted": 3,
+    "head_str_landed": 20,
+    "head_str_attempted": 33,
+    "body_str_landed": 1,
+    "body_str_attempted": 1,
+    "leg_str_landed": 4,
+    "leg_str_attempted": 4,
+    "distance_str_landed": 15,
+    "distance_str_attempted": 27,
+    "clinch_str_landed": 0,
+    "clinch_str_attempted": 0,
+    "ground_str_landed": 10,
+    "ground_str_attempted": 11
+}
+2026-01-17 23:42:26 [FFLogger] INFO: {
+    "fight_id": "983fab4080743ed0",
+    "fighter_id": "0112352cb32f5026",
+    "opponent_id": "285ae0b4a68221f4",
+    "knockdowns": 0,
+    "tot_str_raw": "8 of 22",
+    "td_raw": "0 of 0",
+    "sub_attempts": 0,
+    "reversals": 0,
+    "ctrl_time": 0,
+    "sig_str_raw": "8 of 22",
+    "head_str_raw": "4 of 16",
+    "body_str_raw": "4 of 6",
+    "leg_str_raw": "0 of 0",
+    "distance_str_raw": "8 of 22",
+    "clinch_str_raw": "0 of 0",
+    "ground_str_raw": "0 of 0",
+    "sig_str_landed": 8,
+    "sig_str_attempted": 22,
+    "tot_str_landed": 8,
+    "tot_str_attempted": 22,
+    "td_landed": 0,
+    "td_attempted": 0,
+    "head_str_landed": 4,
+    "head_str_attempted": 16,
+    "body_str_landed": 4,
+    "body_str_attempted": 6,
+    "leg_str_landed": 0,
+    "leg_str_attempted": 0,
+    "distance_str_landed": 8,
+    "distance_str_attempted": 22,
+    "clinch_str_landed": 0,
+    "clinch_str_attempted": 0,
+    "ground_str_landed": 0,
+    "ground_str_attempted": 0
+}
+2026-01-17 23:42:26 [scrapy.core.scraper] ERROR: Error processing {'blue_fighter_id': 'b671bdf981ad527d',
+ 'blue_fighter_name': 'HyunSung Park',
+ 'blue_status': 'W',
+ 'decision_type': None,
+ 'end_round': 3,
+ 'end_round_time': 191,
+ 'fight_id': '98094a500529d442',
+ 'finish_type': 'SUB',
+ 'gender': 'Men',
+ 'is_title_fight': True,
+ 'loser_id': 'adccbc19b22e19af',
+ 'method_raw': 'Submission',
+ 'red_fighter_id': 'adccbc19b22e19af',
+ 'red_fighter_name': 'SeungGuk Choi',
+ 'red_status': 'L',
+ 'referee': 'Marc Goddard',
+ 'result_type': 'Win',
+ 'rounds_scheduled': 3,
+ 'time_scheduled': 900,
+ 'total_duration': 791,
+ 'weight_class': 'Flyweight',
+ 'winner_color': 'Blue',
+ 'winner_id': 'b671bdf981ad527d'}
+Traceback (most recent call last):
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/scraper.py", line 387, in start_itemproc
+    output = await maybe_deferred_to_future(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.itemproc.process_item(item, self.crawler.spider)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/twisted/internet/defer.py", line 1092, in _runCallbacks
+    current.result = callback(  # type: ignore[misc]
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+        current.result, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/utils/defer.py", line 407, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+                              ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 290, in process_item
+    self._validate_fight(item)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 322, in _validate_fight
+    self._check_required_fields(item, required, 'FightItem')
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 409, in _check_required_fields
+    raise ValueError(f"{item_type}: required field '{field}' is missing or empty")
+ValueError: FightItem: required field 'event_id' is missing or empty
+2026-01-17 23:42:26 [FFLogger] INFO: {
+    "fight_id": "98094a500529d442",
+    "fighter_id": "adccbc19b22e19af",
+    "opponent_id": "b671bdf981ad527d",
+    "knockdowns": 1,
+    "tot_str_raw": "30 of 83",
+    "td_raw": "0 of 2",
+    "sub_attempts": 0,
+    "reversals": 0,
+    "ctrl_time": 158,
+    "sig_str_raw": "20 of 69",
+    "head_str_raw": "12 of 54",
+    "body_str_raw": "3 of 5",
+    "leg_str_raw": "5 of 10",
+    "distance_str_raw": "20 of 67",
+    "clinch_str_raw": "0 of 2",
+    "ground_str_raw": "0 of 0",
+    "sig_str_landed": 20,
+    "sig_str_attempted": 69,
+    "tot_str_landed": 30,
+    "tot_str_attempted": 83,
+    "td_landed": 0,
+    "td_attempted": 2,
+    "head_str_landed": 12,
+    "head_str_attempted": 54,
+    "body_str_landed": 3,
+    "body_str_attempted": 5,
+    "leg_str_landed": 5,
+    "leg_str_attempted": 10,
+    "distance_str_landed": 20,
+    "distance_str_attempted": 67,
+    "clinch_str_landed": 0,
+    "clinch_str_attempted": 2,
+    "ground_str_landed": 0,
+    "ground_str_attempted": 0
+}
+2026-01-17 23:42:26 [FFLogger] INFO: {
+    "fight_id": "98094a500529d442",
+    "fighter_id": "b671bdf981ad527d",
+    "opponent_id": "adccbc19b22e19af",
+    "knockdowns": 0,
+    "tot_str_raw": "59 of 125",
+    "td_raw": "1 of 3",
+    "sub_attempts": 3,
+    "reversals": 0,
+    "ctrl_time": 107,
+    "sig_str_raw": "38 of 91",
+    "head_str_raw": "20 of 61",
+    "body_str_raw": "1 of 3",
+    "leg_str_raw": "17 of 27",
+    "distance_str_raw": "37 of 88",
+    "clinch_str_raw": "1 of 3",
+    "ground_str_raw": "0 of 0",
+    "sig_str_landed": 38,
+    "sig_str_attempted": 91,
+    "tot_str_landed": 59,
+    "tot_str_attempted": 125,
+    "td_landed": 1,
+    "td_attempted": 3,
+    "head_str_landed": 20,
+    "head_str_attempted": 61,
+    "body_str_landed": 1,
+    "body_str_attempted": 3,
+    "leg_str_landed": 17,
+    "leg_str_attempted": 27,
+    "distance_str_landed": 37,
+    "distance_str_attempted": 88,
+    "clinch_str_landed": 1,
+    "clinch_str_attempted": 3,
+    "ground_str_landed": 0,
+    "ground_str_attempted": 0
+}
+2026-01-17 23:42:26 [scrapy.core.scraper] ERROR: Error processing {'blue_fighter_id': 'cc7040fe76f0ef91',
+ 'blue_fighter_name': 'Devin Clark',
+ 'blue_status': 'W',
+ 'decision_type': 'U-DEC',
+ 'end_round': 3,
+ 'end_round_time': 300,
+ 'fight_id': '7a1abc0230af730c',
+ 'finish_type': 'DEC',
+ 'gender': 'Men',
+ 'is_title_fight': False,
+ 'loser_id': '74f9448b97bf8bec',
+ 'method_raw': 'Decision - Unanimous',
+ 'red_fighter_id': '74f9448b97bf8bec',
+ 'red_fighter_name': 'Da Woon Jung',
+ 'red_status': 'L',
+ 'referee': 'Keith Peterson',
+ 'result_type': 'Win',
+ 'rounds_scheduled': 3,
+ 'time_scheduled': 900,
+ 'total_duration': 900,
+ 'weight_class': 'Light Heavyweight',
+ 'winner_color': 'Blue',
+ 'winner_id': 'cc7040fe76f0ef91'}
+Traceback (most recent call last):
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/scraper.py", line 387, in start_itemproc
+    output = await maybe_deferred_to_future(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.itemproc.process_item(item, self.crawler.spider)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/twisted/internet/defer.py", line 1092, in _runCallbacks
+    current.result = callback(  # type: ignore[misc]
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+        current.result, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/utils/defer.py", line 407, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+                              ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 290, in process_item
+    self._validate_fight(item)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 322, in _validate_fight
+    self._check_required_fields(item, required, 'FightItem')
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 409, in _check_required_fields
+    raise ValueError(f"{item_type}: required field '{field}' is missing or empty")
+ValueError: FightItem: required field 'event_id' is missing or empty
+2026-01-17 23:42:26 [FFLogger] INFO: {
+    "fight_id": "7a1abc0230af730c",
+    "fighter_id": "74f9448b97bf8bec",
+    "opponent_id": "cc7040fe76f0ef91",
+    "knockdowns": 0,
+    "tot_str_raw": "43 of 78",
+    "td_raw": "1 of 5",
+    "sub_attempts": 0,
+    "reversals": 0,
+    "ctrl_time": 348,
+    "sig_str_raw": "18 of 52",
+    "head_str_raw": "11 of 42",
+    "body_str_raw": "6 of 9",
+    "leg_str_raw": "1 of 1",
+    "distance_str_raw": "7 of 36",
+    "clinch_str_raw": "11 of 16",
+    "ground_str_raw": "0 of 0",
+    "sig_str_landed": 18,
+    "sig_str_attempted": 52,
+    "tot_str_landed": 43,
+    "tot_str_attempted": 78,
+    "td_landed": 1,
+    "td_attempted": 5,
+    "head_str_landed": 11,
+    "head_str_attempted": 42,
+    "body_str_landed": 6,
+    "body_str_attempted": 9,
+    "leg_str_landed": 1,
+    "leg_str_attempted": 1,
+    "distance_str_landed": 7,
+    "distance_str_attempted": 36,
+    "clinch_str_landed": 11,
+    "clinch_str_attempted": 16,
+    "ground_str_landed": 0,
+    "ground_str_attempted": 0
+}
+2026-01-17 23:42:26 [FFLogger] INFO: {
+    "fight_id": "7a1abc0230af730c",
+    "fighter_id": "cc7040fe76f0ef91",
+    "opponent_id": "74f9448b97bf8bec",
+    "knockdowns": 0,
+    "tot_str_raw": "96 of 136",
+    "td_raw": "3 of 11",
+    "sub_attempts": 0,
+    "reversals": 0,
+    "ctrl_time": 302,
+    "sig_str_raw": "39 of 70",
+    "head_str_raw": "22 of 51",
+    "body_str_raw": "5 of 6",
+    "leg_str_raw": "12 of 13",
+    "distance_str_raw": "26 of 52",
+    "clinch_str_raw": "11 of 14",
+    "ground_str_raw": "2 of 4",
+    "sig_str_landed": 39,
+    "sig_str_attempted": 70,
+    "tot_str_landed": 96,
+    "tot_str_attempted": 136,
+    "td_landed": 3,
+    "td_attempted": 11,
+    "head_str_landed": 22,
+    "head_str_attempted": 51,
+    "body_str_landed": 5,
+    "body_str_attempted": 6,
+    "leg_str_landed": 12,
+    "leg_str_attempted": 13,
+    "distance_str_landed": 26,
+    "distance_str_attempted": 52,
+    "clinch_str_landed": 11,
+    "clinch_str_attempted": 14,
+    "ground_str_landed": 2,
+    "ground_str_attempted": 4
+}
+2026-01-17 23:42:26 [scrapy.core.scraper] ERROR: Error processing {'blue_fighter_id': 'd8c811df0386d5e8',
+ 'blue_fighter_name': 'Rinya Nakamura',
+ 'blue_status': 'W',
+ 'decision_type': None,
+ 'end_round': 1,
+ 'end_round_time': 33,
+ 'fight_id': 'a8067e65eb737a09',
+ 'finish_type': 'KO/TKO',
+ 'gender': 'Men',
+ 'is_title_fight': True,
+ 'loser_id': '148bb103cfbf123e',
+ 'method_raw': 'KO/TKO',
+ 'red_fighter_id': '148bb103cfbf123e',
+ 'red_fighter_name': 'Toshiomi Kazama',
+ 'red_status': 'L',
+ 'referee': 'Keith Peterson',
+ 'result_type': 'Win',
+ 'rounds_scheduled': 3,
+ 'time_scheduled': 900,
+ 'total_duration': 33,
+ 'weight_class': 'Bantamweight',
+ 'winner_color': 'Blue',
+ 'winner_id': 'd8c811df0386d5e8'}
+Traceback (most recent call last):
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/scraper.py", line 387, in start_itemproc
+    output = await maybe_deferred_to_future(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.itemproc.process_item(item, self.crawler.spider)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/twisted/internet/defer.py", line 1092, in _runCallbacks
+    current.result = callback(  # type: ignore[misc]
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+        current.result, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/utils/defer.py", line 407, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+                              ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 290, in process_item
+    self._validate_fight(item)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 322, in _validate_fight
+    self._check_required_fields(item, required, 'FightItem')
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 409, in _check_required_fields
+    raise ValueError(f"{item_type}: required field '{field}' is missing or empty")
+ValueError: FightItem: required field 'event_id' is missing or empty
+2026-01-17 23:42:26 [FFLogger] INFO: {
+    "fight_id": "a8067e65eb737a09",
+    "fighter_id": "148bb103cfbf123e",
+    "opponent_id": "d8c811df0386d5e8",
+    "knockdowns": 0,
+    "tot_str_raw": "4 of 10",
+    "td_raw": "0 of 0",
+    "sub_attempts": 0,
+    "reversals": 0,
+    "ctrl_time": 0,
+    "sig_str_raw": "4 of 10",
+    "head_str_raw": "4 of 10",
+    "body_str_raw": "0 of 0",
+    "leg_str_raw": "0 of 0",
+    "distance_str_raw": "4 of 10",
+    "clinch_str_raw": "0 of 0",
+    "ground_str_raw": "0 of 0",
+    "sig_str_landed": 4,
+    "sig_str_attempted": 10,
+    "tot_str_landed": 4,
+    "tot_str_attempted": 10,
+    "td_landed": 0,
+    "td_attempted": 0,
+    "head_str_landed": 4,
+    "head_str_attempted": 10,
+    "body_str_landed": 0,
+    "body_str_attempted": 0,
+    "leg_str_landed": 0,
+    "leg_str_attempted": 0,
+    "distance_str_landed": 4,
+    "distance_str_attempted": 10,
+    "clinch_str_landed": 0,
+    "clinch_str_attempted": 0,
+    "ground_str_landed": 0,
+    "ground_str_attempted": 0
+}
+2026-01-17 23:42:26 [FFLogger] INFO: {
+    "fight_id": "a8067e65eb737a09",
+    "fighter_id": "d8c811df0386d5e8",
+    "opponent_id": "148bb103cfbf123e",
+    "knockdowns": 2,
+    "tot_str_raw": "11 of 25",
+    "td_raw": "0 of 0",
+    "sub_attempts": 0,
+    "reversals": 0,
+    "ctrl_time": 3,
+    "sig_str_raw": "11 of 25",
+    "head_str_raw": "11 of 25",
+    "body_str_raw": "0 of 0",
+    "leg_str_raw": "0 of 0",
+    "distance_str_raw": "10 of 24",
+    "clinch_str_raw": "0 of 0",
+    "ground_str_raw": "1 of 1",
+    "sig_str_landed": 11,
+    "sig_str_attempted": 25,
+    "tot_str_landed": 11,
+    "tot_str_attempted": 25,
+    "td_landed": 0,
+    "td_attempted": 0,
+    "head_str_landed": 11,
+    "head_str_attempted": 25,
+    "body_str_landed": 0,
+    "body_str_attempted": 0,
+    "leg_str_landed": 0,
+    "leg_str_attempted": 0,
+    "distance_str_landed": 10,
+    "distance_str_attempted": 24,
+    "clinch_str_landed": 0,
+    "clinch_str_attempted": 0,
+    "ground_str_landed": 1,
+    "ground_str_attempted": 1
+}
+2026-01-17 23:42:26 [scrapy.core.scraper] ERROR: Error processing {'blue_fighter_id': '3f11fd1751fa83b1',
+ 'blue_fighter_name': 'Yizha',
+ 'blue_status': 'L',
+ 'decision_type': 'S-DEC',
+ 'end_round': 3,
+ 'end_round_time': 300,
+ 'fight_id': '765482eb58e8db48',
+ 'finish_type': 'DEC',
+ 'gender': 'Men',
+ 'is_title_fight': True,
+ 'loser_id': '3f11fd1751fa83b1',
+ 'method_raw': 'Decision - Split',
+ 'red_fighter_id': 'd008d785f6347dc2',
+ 'red_fighter_name': 'JeongYeong Lee',
+ 'red_status': 'W',
+ 'referee': 'Mark Smith',
+ 'result_type': 'Win',
+ 'rounds_scheduled': 3,
+ 'time_scheduled': 900,
+ 'total_duration': 900,
+ 'weight_class': 'Featherweight',
+ 'winner_color': 'Red',
+ 'winner_id': 'd008d785f6347dc2'}
+Traceback (most recent call last):
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/scraper.py", line 387, in start_itemproc
+    output = await maybe_deferred_to_future(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.itemproc.process_item(item, self.crawler.spider)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/twisted/internet/defer.py", line 1092, in _runCallbacks
+    current.result = callback(  # type: ignore[misc]
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+        current.result, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/utils/defer.py", line 407, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+                              ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 290, in process_item
+    self._validate_fight(item)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 322, in _validate_fight
+    self._check_required_fields(item, required, 'FightItem')
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 409, in _check_required_fields
+    raise ValueError(f"{item_type}: required field '{field}' is missing or empty")
+ValueError: FightItem: required field 'event_id' is missing or empty
+2026-01-17 23:42:26 [FFLogger] INFO: {
+    "fight_id": "765482eb58e8db48",
+    "fighter_id": "d008d785f6347dc2",
+    "opponent_id": "3f11fd1751fa83b1",
+    "knockdowns": 0,
+    "tot_str_raw": "66 of 105",
+    "td_raw": "0 of 0",
+    "sub_attempts": 0,
+    "reversals": 0,
+    "ctrl_time": 50,
+    "sig_str_raw": "25 of 57",
+    "head_str_raw": "18 of 50",
+    "body_str_raw": "7 of 7",
+    "leg_str_raw": "0 of 0",
+    "distance_str_raw": "18 of 49",
+    "clinch_str_raw": "7 of 8",
+    "ground_str_raw": "0 of 0",
+    "sig_str_landed": 25,
+    "sig_str_attempted": 57,
+    "tot_str_landed": 66,
+    "tot_str_attempted": 105,
+    "td_landed": 0,
+    "td_attempted": 0,
+    "head_str_landed": 18,
+    "head_str_attempted": 50,
+    "body_str_landed": 7,
+    "body_str_attempted": 7,
+    "leg_str_landed": 0,
+    "leg_str_attempted": 0,
+    "distance_str_landed": 18,
+    "distance_str_attempted": 49,
+    "clinch_str_landed": 7,
+    "clinch_str_attempted": 8,
+    "ground_str_landed": 0,
+    "ground_str_attempted": 0
+}
+2026-01-17 23:42:26 [FFLogger] INFO: {
+    "fight_id": "765482eb58e8db48",
+    "fighter_id": "3f11fd1751fa83b1",
+    "opponent_id": "d008d785f6347dc2",
+    "knockdowns": 0,
+    "tot_str_raw": "37 of 74",
+    "td_raw": "5 of 21",
+    "sub_attempts": 0,
+    "reversals": 0,
+    "ctrl_time": 499,
+    "sig_str_raw": "24 of 58",
+    "head_str_raw": "17 of 48",
+    "body_str_raw": "6 of 9",
+    "leg_str_raw": "1 of 1",
+    "distance_str_raw": "13 of 46",
+    "clinch_str_raw": "7 of 7",
+    "ground_str_raw": "4 of 5",
+    "sig_str_landed": 24,
+    "sig_str_attempted": 58,
+    "tot_str_landed": 37,
+    "tot_str_attempted": 74,
+    "td_landed": 5,
+    "td_attempted": 21,
+    "head_str_landed": 17,
+    "head_str_attempted": 48,
+    "body_str_landed": 6,
+    "body_str_attempted": 9,
+    "leg_str_landed": 1,
+    "leg_str_attempted": 1,
+    "distance_str_landed": 13,
+    "distance_str_attempted": 46,
+    "clinch_str_landed": 7,
+    "clinch_str_attempted": 7,
+    "ground_str_landed": 4,
+    "ground_str_attempted": 5
+}
+2026-01-17 23:42:26 [scrapy.core.scraper] ERROR: Error processing {'blue_fighter_id': 'e2f6b2769aaedd6c',
+ 'blue_fighter_name': 'Serghei Spivac',
+ 'blue_status': 'W',
+ 'decision_type': None,
+ 'end_round': 1,
+ 'end_round_time': 185,
+ 'fight_id': 'caeeb398f73d213a',
+ 'finish_type': 'SUB',
+ 'gender': 'Men',
+ 'is_title_fight': False,
+ 'loser_id': 'd3df1add9d9a7efb',
+ 'method_raw': 'Submission',
+ 'red_fighter_id': 'd3df1add9d9a7efb',
+ 'red_fighter_name': 'Derrick Lewis',
+ 'red_status': 'L',
+ 'referee': 'Marc Goddard',
+ 'result_type': 'Win',
+ 'rounds_scheduled': 5,
+ 'time_scheduled': 1500,
+ 'total_duration': 185,
+ 'weight_class': 'Heavyweight',
+ 'winner_color': 'Blue',
+ 'winner_id': 'e2f6b2769aaedd6c'}
+Traceback (most recent call last):
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/scraper.py", line 387, in start_itemproc
+    output = await maybe_deferred_to_future(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.itemproc.process_item(item, self.crawler.spider)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/twisted/internet/defer.py", line 1092, in _runCallbacks
+    current.result = callback(  # type: ignore[misc]
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+        current.result, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/utils/defer.py", line 407, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+                              ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 290, in process_item
+    self._validate_fight(item)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 322, in _validate_fight
+    self._check_required_fields(item, required, 'FightItem')
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 409, in _check_required_fields
+    raise ValueError(f"{item_type}: required field '{field}' is missing or empty")
+ValueError: FightItem: required field 'event_id' is missing or empty
+2026-01-17 23:42:26 [FFLogger] INFO: {
+    "fight_id": "caeeb398f73d213a",
+    "fighter_id": "d3df1add9d9a7efb",
+    "opponent_id": "e2f6b2769aaedd6c",
+    "knockdowns": 0,
+    "tot_str_raw": "0 of 3",
+    "td_raw": "0 of 0",
+    "sub_attempts": 0,
+    "reversals": 0,
+    "ctrl_time": 0,
+    "sig_str_raw": "0 of 3",
+    "head_str_raw": "0 of 2",
+    "body_str_raw": "0 of 1",
+    "leg_str_raw": "0 of 0",
+    "distance_str_raw": "0 of 3",
+    "clinch_str_raw": "0 of 0",
+    "ground_str_raw": "0 of 0",
+    "sig_str_landed": 0,
+    "sig_str_attempted": 3,
+    "tot_str_landed": 0,
+    "tot_str_attempted": 3,
+    "td_landed": 0,
+    "td_attempted": 0,
+    "head_str_landed": 0,
+    "head_str_attempted": 2,
+    "body_str_landed": 0,
+    "body_str_attempted": 1,
+    "leg_str_landed": 0,
+    "leg_str_attempted": 0,
+    "distance_str_landed": 0,
+    "distance_str_attempted": 3,
+    "clinch_str_landed": 0,
+    "clinch_str_attempted": 0,
+    "ground_str_landed": 0,
+    "ground_str_attempted": 0
+}
+2026-01-17 23:42:26 [FFLogger] INFO: {
+    "fight_id": "caeeb398f73d213a",
+    "fighter_id": "e2f6b2769aaedd6c",
+    "opponent_id": "d3df1add9d9a7efb",
+    "knockdowns": 0,
+    "tot_str_raw": "36 of 54",
+    "td_raw": "6 of 8",
+    "sub_attempts": 1,
+    "reversals": 0,
+    "ctrl_time": 152,
+    "sig_str_raw": "12 of 21",
+    "head_str_raw": "12 of 21",
+    "body_str_raw": "0 of 0",
+    "leg_str_raw": "0 of 0",
+    "distance_str_raw": "0 of 3",
+    "clinch_str_raw": "0 of 0",
+    "ground_str_raw": "12 of 18",
+    "sig_str_landed": 12,
+    "sig_str_attempted": 21,
+    "tot_str_landed": 36,
+    "tot_str_attempted": 54,
+    "td_landed": 6,
+    "td_attempted": 8,
+    "head_str_landed": 12,
+    "head_str_attempted": 21,
+    "body_str_landed": 0,
+    "body_str_attempted": 0,
+    "leg_str_landed": 0,
+    "leg_str_attempted": 0,
+    "distance_str_landed": 0,
+    "distance_str_attempted": 3,
+    "clinch_str_landed": 0,
+    "clinch_str_attempted": 0,
+    "ground_str_landed": 12,
+    "ground_str_attempted": 18
+}
+2026-01-17 23:42:26 [scrapy.core.scraper] ERROR: Error processing {'blue_fighter_id': 'c051c2e12d692b8a',
+ 'blue_fighter_name': 'Jesus Aguilar',
+ 'blue_status': 'L',
+ 'decision_type': None,
+ 'end_round': 1,
+ 'end_round_time': 260,
+ 'fight_id': 'a26ca06cce403ce2',
+ 'finish_type': 'SUB',
+ 'gender': 'Men',
+ 'is_title_fight': False,
+ 'loser_id': 'c051c2e12d692b8a',
+ 'method_raw': 'Submission',
+ 'red_fighter_id': '4461d7e47375a895',
+ 'red_fighter_name': 'Tatsuro Taira',
+ 'red_status': 'W',
+ 'referee': 'Chris Tognoni',
+ 'result_type': 'Win',
+ 'rounds_scheduled': 3,
+ 'time_scheduled': 900,
+ 'total_duration': 260,
+ 'weight_class': 'Flyweight',
+ 'winner_color': 'Red',
+ 'winner_id': '4461d7e47375a895'}
+Traceback (most recent call last):
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/core/scraper.py", line 387, in start_itemproc
+    output = await maybe_deferred_to_future(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.itemproc.process_item(item, self.crawler.spider)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/twisted/internet/defer.py", line 1092, in _runCallbacks
+    current.result = callback(  # type: ignore[misc]
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+        current.result, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/erickim/Desktop/ufc/venv/lib/python3.13/site-packages/scrapy/utils/defer.py", line 407, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+                              ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 290, in process_item
+    self._validate_fight(item)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 322, in _validate_fight
+    self._check_required_fields(item, required, 'FightItem')
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/erickim/Desktop/ufc/data/crawler/pipelines.py", line 409, in _check_required_fields
+    raise ValueError(f"{item_type}: required field '{field}' is missing or empty")
+ValueError: FightItem: required field 'event_id' is missing or empty
+2026-01-17 23:42:26 [FFLogger] INFO: {
+    "fight_id": "a26ca06cce403ce2",
+    "fighter_id": "4461d7e47375a895",
+    "opponent_id": "c051c2e12d692b8a",
+    "knockdowns": 0,
+    "tot_str_raw": "5 of 5",
+    "td_raw": "1 of 1",
+    "sub_attempts": 2,
+    "reversals": 0,
+    "ctrl_time": 229,
+    "sig_str_raw": "1 of 1",
+    "head_str_raw": "1 of 1",
+    "body_str_raw": "0 of 0",
+    "leg_str_raw": "0 of 0",
+    "distance_str_raw": "0 of 0",
+    "clinch_str_raw": "0 of 0",
+    "ground_str_raw": "1 of 1",
+    "sig_str_landed": 1,
+    "sig_str_attempted": 1,
+    "tot_str_landed": 5,
+    "tot_str_attempted": 5,
+    "td_landed": 1,
+    "td_attempted": 1,
+    "head_str_landed": 1,
+    "head_str_attempted": 1,
+    "body_str_landed": 0,
+    "body_str_attempted": 0,
+    "leg_str_landed": 0,
+    "leg_str_attempted": 0,
+    "distance_str_landed": 0,
+    "distance_str_attempted": 0,
+    "clinch_str_landed": 0,
+    "clinch_str_attempted": 0,
+    "ground_str_landed": 1,
+    "ground_str_attempted": 1
+}
+2026-01-17 23:42:26 [FFLogger] INFO: {
+    "fight_id": "a26ca06cce403ce2",
+    "fighter_id": "c051c2e12d692b8a",
+    "opponent_id": "4461d7e47375a895",
+    "knockdowns": 0,
+    "tot_str_raw": "2 of 2",
+    "td_raw": "0 of 0",
+    "sub_attempts": 1,
+    "reversals": 0,
+    "ctrl_time": 23,
+    "sig_str_raw": "2 of 2",
+    "head_str_raw": "0 of 0",
+    "body_str_raw": "1 of 1",
+    "leg_str_raw": "1 of 1",
+    "distance_str_raw": "2 of 2",
+    "clinch_str_raw": "0 of 0",
+    "ground_str_raw": "0 of 0",
+    "sig_str_landed": 2,
+    "sig_str_attempted": 2,
+    "tot_str_landed": 2,
+    "tot_str_attempted": 2,
+    "td_landed": 0,
+    "td_attempted": 0,
+    "head_str_landed": 0,
+    "head_str_attempted": 0,
+    "body_str_landed": 1,
+    "body_str_attempted": 1,
+    "leg_str_landed": 1,
+    "leg_str_attempted": 1,
+    "distance_str_landed": 2,
+    "distance_str_attempted": 2,
+    "clinch_str_landed": 0,
+    "clinch_str_attempted": 0,
+    "ground_str_landed": 0,
+    "ground_str_attempted": 0
+}
+2026-01-17 23:42:26 [scrapy.core.engine] INFO: Closing spider (finished)
+2026-01-17 23:42:26 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 10814,
+ 'downloader/request_count': 35,
+ 'downloader/request_method_count/GET': 35,
+ 'downloader/response_bytes': 166095,
+ 'downloader/response_count': 35,
+ 'downloader/response_status_count/200': 34,
+ 'downloader/response_status_count/404': 1,
+ 'elapsed_time_seconds': 3.551198,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2026, 1, 18, 7, 42, 26, 915459, tzinfo=datetime.timezone.utc),
+ 'httpcompression/response_bytes': 1405126,
+ 'httpcompression/response_count': 34,
+ 'item_scraped_count': 44,
+ 'items_per_minute': 880.0,
+ 'log_count/ERROR': 12,
+ 'log_count/INFO': 54,
+ 'log_count/WARNING': 1,
+ 'memusage/max': 75497472,
+ 'memusage/startup': 75497472,
+ 'request_depth_max': 1,
+ 'response_received_count': 35,
+ 'responses_per_minute': 700.0,
+ 'robotstxt/request_count': 1,
+ 'robotstxt/response_count': 1,
+ 'robotstxt/response_status_count/404': 1,
+ 'scheduler/dequeued': 34,
+ 'scheduler/dequeued/memory': 34,
+ 'scheduler/enqueued': 34,
+ 'scheduler/enqueued/memory': 34,
+ 'start_time': datetime.datetime(2026, 1, 18, 7, 42, 23, 364261, tzinfo=datetime.timezone.utc)}
+2026-01-17 23:42:26 [scrapy.core.engine] INFO: Spider closed (finished)

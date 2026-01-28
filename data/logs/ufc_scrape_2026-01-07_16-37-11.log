@@ -1,0 +1,13 @@
+2026-01-07 16:37:12 [scrapy.utils.log] INFO: Scrapy 2.13.4 started (bot: crawler)
+2026-01-07 16:37:12 [scrapy.utils.log] INFO: Versions:
+{'lxml': '6.0.2',
+ 'libxml2': '2.14.6',
+ 'cssselect': '1.3.0',
+ 'parsel': '1.10.0',
+ 'w3lib': '2.3.1',
+ 'Twisted': '25.5.0',
+ 'Python': '3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, '
+           '11:23:37) [Clang 14.0.6 ]',
+ 'pyOpenSSL': '25.3.0 (OpenSSL 3.5.4 30 Sep 2025)',
+ 'cryptography': '46.0.3',
+ 'Platform': 'macOS-15.6.1-arm64-arm-64bit-Mach-O'}

@@ -1,0 +1,3 @@
+SELECT * FROM events ORDER BY date DESC LIMIT 10;
+
+SELECT * FROM events ORDER BY date DESC LIMIT 15;
