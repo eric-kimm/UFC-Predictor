@@ -43,6 +43,7 @@ FIGHT_SELECTORS = {
     'red_status' : "(//i[contains(@class, 'person-status')])[1]/text()",
     'blue_status' : "(//i[contains(@class, 'person-status')])[2]/text()",
     'winner_id': None,
+    'winner_color': None,
     'loser_id': None,
     'result_type': None,
     'end_round': "//i[contains(text(),'Round')]/following-sibling::text()",

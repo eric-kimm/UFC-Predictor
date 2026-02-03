@@ -148,18 +148,16 @@ class UfcSpider(scrapy.Spider):
         fightLoader.add_xpath('red_fighter_name', '(//div[@class="b-fight-details__person-text"]//a/text())[1]')
         fightLoader.add_xpath('blue_fighter_name', '(//div[@class="b-fight-details__person-text"]//a/text())[2]')
 
-        FIELDS = FIGHT_SELECTORS.keys()
         event_status = fightLoader.get_output_value('event_status')
 
         if event_status == 'completed':
-            for field in FIELDS:
-                xpath = FIGHT_SELECTORS.get(field)
-                if xpath:
-                    fightLoader.add_xpath(field, xpath)
+            for field, value in FIGHT_SELECTORS.items():
+                if value:
+                    fightLoader.add_xpath(field, value)
                 else:
                     fightLoader.add_value(field, None)
         else:
-            for field in FIELDS:
+            for field in FIGHT_SELECTORS.keys():
                 fightLoader.add_value(field, None)
         
         ffLoaderRed = FighterFightLoader(item=FighterFightItem(), response = response)
@@ -193,7 +191,6 @@ class UfcSpider(scrapy.Spider):
         
         # Total Table
         total_tds = response.xpath("(//table)//td[@class='b-fight-details__table-col']")
-
         for field, td in zip(TOTAL_FIELDS, total_tds):
             if field is None:
                 continue
@@ -205,13 +202,11 @@ class UfcSpider(scrapy.Spider):
                 ffLoaderRed.add_value(field, red_val)
                 ffLoaderBlue.add_value(field, blue_val)
             else:
-                red_val.add_value(field, None)
-                blue_val.add_value(field, None)
-
+                ffLoaderRed.add_value(field, None)
+                ffLoaderBlue.add_value(field, None)
 
         # Significant Strikes Table
         sig_tds = response.xpath("(//table)[3]//td[@class='b-fight-details__table-col']")
-
         for field, td in zip(SIG_FIELDS, sig_tds):
             if field is None:
                 continue
@@ -222,8 +217,8 @@ class UfcSpider(scrapy.Spider):
                 ffLoaderRed.add_value(field, red_val)
                 ffLoaderBlue.add_value(field, blue_val)
             else:
-                red_val.add_value(field, None)
-                blue_val.add_value(field, None)
+                ffLoaderRed.add_value(field, None)
+                ffLoaderBlue.add_value(field, None)
 
     # Get attributes of each fighter (FighterItem)
     def parse_fighter(self, response):

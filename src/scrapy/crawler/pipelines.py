@@ -45,23 +45,21 @@ class FightLoggingPipeline:
         return item
 
 # Log scraped fighter fights
-class FFLoggingPipeline:
+class FighterFightLoggingPipeline:
     def __init__(self):
         self.logger = logging.getLogger('FFLogger')
     def process_item(self, item, spider):
-        sig_str = item.get('sig_str_landed', 'N/A')
         if item.__class__.__name__ == 'FighterFightItem':
             readable_item = json.dumps(dict(item), indent=4)
             self.logger.info(readable_item)
         return item
 
 # Clean fighter attributes
-class FighterPipeline:
+class FighterProcessorPipeline:
     def process_item(self, item, spider):
         if not isinstance(item,  FighterItem):
             return item
-        
-        # Clean height
+    
         def parse_height(h):
             if not h:
                 return None
@@ -70,23 +68,20 @@ class FighterPipeline:
                 return None
             feet = int(m.group(1))
             inches = int(m.group(2).replace('"', '').strip())
-            return feet * 12 + inches  # return total inches
+            return feet * 12 + inches
 
-        # Clean weight
         def parse_weight(w):
             if not w:
                 return None
             m = re.search(r"(\d+)", w)
             return int(m.group(1)) if m else None
 
-        # Clean reach
         def parse_reach(r):
             if not r:
                 return None
             m = re.search(r"(\d+)", r)
             return int(m.group(1)) if m else None
             
-        # Apply the cleaning
         item['height'] = parse_height(item.get('height'))
         item['weight'] = parse_weight(item.get('weight'))
         item['reach'] = parse_reach(item.get('reach'))
@@ -94,6 +89,7 @@ class FighterPipeline:
         item['dob'] = item.get('dob')
 
         return item
+        
     
 # Convert dates into datetime objects
 class DateFormattingPipeline:
@@ -127,13 +123,20 @@ class DateFormattingPipeline:
         return item
 
 # Determine fight winners and losers
-class FightIdentityPipeline:
+class FightProcessorPipeline:
     def process_item(self, item, spider):
         if not isinstance(item,  FightItem):
             return item
         if item.get('event_status') == 'upcoming':
-            return item
+            return item   
         
+        item = self.handle_results(item)
+        item = self.handle_time(item)
+        item = self.handle_winners_and_losers(item)
+
+        return item
+        
+    def handle_winners_and_losers(self, item):
         item['winner_id'] = None
         item['loser_id'] = None
         item['winner_color'] = None
@@ -157,15 +160,8 @@ class FightIdentityPipeline:
         
         item['referee'] = item.get('referee')
         return item
-    
-# Convert fight times into seconds
-class FightTimePipeline:
-    def process_item(self, item, spider):
-        if not isinstance(item, FightItem):
-            return item
-        if item.get('event_status') == 'upcoming':
-            return item
         
+    def handle_time(self, item):
         end_rnd = item.get('end_round')
         end_rnd_time = item.get('end_round_time')
         sched_rnd = item.get('rounds_scheduled')
@@ -177,24 +173,8 @@ class FightTimePipeline:
             item['total_duration'] = ((end_rnd - 1) * 300) + end_rnd_time
 
         return item
-    
-# Determine fight results
-class FightResultsPipeline:
-    def process_item(self, item, spider):
-        if not isinstance(item, FightItem):
-            return item
-        if item.get('event_status') == 'upcoming':
-            return item
-        def determine_decision(text):
-            if "unanimous" in text:
-                return"U-DEC"
-            elif "split" in text:
-                return "S-DEC"
-            elif "majority" in text:
-                return "M-DEC"
-            else:
-                return "OTHER-DEC"
-            
+        
+    def handle_results(self, item):
         item['decision_type'] = None
         res = item.get('result_type')
         method_lower = item.get('method_raw').lower()
@@ -202,7 +182,7 @@ class FightResultsPipeline:
             item["finish_type"] = res
         elif res == "Draw":
             item["finish_type"] = res
-            item["decision_type"] = determine_decision(method_lower)
+            item["decision_type"] = self.determine_decision(method_lower)
         else:
             if "ko" in method_lower:
                 item["finish_type"] = "KO/TKO"
@@ -210,7 +190,7 @@ class FightResultsPipeline:
                 item["finish_type"] = "SUB"
             elif "decision" in method_lower:
                 item["finish_type"] = "DEC"
-                item["decision_type"] = determine_decision(method_lower)
+                item["decision_type"] = self.determine_decision(method_lower)
             elif "dq" in method_lower:
                 item["finish_type"] = "DQ"
             else:
@@ -218,7 +198,17 @@ class FightResultsPipeline:
 
         return item
 
-class FightUpcomingPipeline:
+    def determine_decision(self, text):
+        if "unanimous" in text:
+            return"U-DEC"
+        elif "split" in text:
+            return "S-DEC"
+        elif "majority" in text:
+            return "M-DEC"
+        else:
+            return "OTHER-DEC"
+
+class FightUpcomingProcessorPipeline:
     def process_item(self, item, spider):
         if not isinstance(item, FightItem):
             return item
@@ -228,6 +218,7 @@ class FightUpcomingPipeline:
         item['blue_status'] = None
         item['winner_id'] = None
         item['loser_id'] = None
+        item['winner_color'] = None
         item['result_type'] = None
         item['end_round'] = None
         item['end_round_time'] = None
@@ -238,50 +229,33 @@ class FightUpcomingPipeline:
         item['method_raw'] = None
         item['finish_type'] = None
         item['decision_type'] = None
+
+        return item
     
 # Clean fighter fight stats
-class FFCleanStatsPipeline:
+class FighterFightProcessorPipeline:
     def process_item(self, item, spider):
         if not isinstance(item, FighterFightItem):
             return item
         if item.get('event_status') == 'upcoming':
             return item
         
-        def handle_raw(value):
-            if value is None:
-                return (None, None)
-            value = str(value).strip().lower()
-            if "of" in value:
-                try:
-                    parts = value.split("of")
-                    landed = int(parts[0].strip())
-                    attempted = int(parts[1].strip())
-                    return (landed, attempted)
-                except (ValueError, IndexError):
-                    return (None, None)
-            return (None, None)            
+        item = self.handle_raw_values(item)
+        item = self.convert_to_numerics(item)
 
+        return item
+        
+    def handle_raw_values(self, item):         
         for raw_key, (landed_key, attempted_key) in RAW_DATA_MAP.items():
             raw_val = item.get(raw_key)
-            landed, attempted = handle_raw(raw_val)
+            landed, attempted = self.split(raw_val)
             
             item[landed_key] = landed
             item[attempted_key] = attempted
 
         return item
-
-# Convert fighter fight stats into numerics
-class FighterFightConvertPipeline:    
-    def __init__(self):
-        self.logger = logging.getLogger(__name__)
     
-    def process_item(self, item, spider):
-        if not isinstance(item, FighterFightItem):
-            return item
-        if item.get('event_status') == 'upcoming':
-            return item
-        
-        # Fields that should be converted to integers
+    def convert_to_numerics(self, item):
         integer_fields = [
             'knockdowns',
             'tot_str_landed', 'tot_str_attempted',
@@ -305,7 +279,21 @@ class FighterFightConvertPipeline:
                     self.logger.warning(f"Could not convert {field}={value} to integer")
         
         return item
-    
+
+    def split(self, value):
+        if value is None:
+            return (None, None)
+        value = str(value).strip().lower()
+        if "of" in value:
+            try:
+                parts = value.split("of")
+                landed = int(parts[0].strip())
+                attempted = int(parts[1].strip())
+                return (landed, attempted)
+            except (ValueError, IndexError):
+                return (None, None)
+        return (None, None)   
+        
 class FighterFightUpcomingPipeline:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
@@ -346,6 +334,8 @@ class FighterFightUpcomingPipeline:
         item['ground_str_landed'] = None 
         item['ground_str_attempted'] = None
         item['ground_str_raw'] = None
+
+        return item
 
 # Validate item fields
 class ValidationPipeline:
@@ -541,7 +531,10 @@ class PostgresPipeline:
             INSERT INTO events (event_id, name, date, event_status, location)
             VALUES (%(event_id)s, %(name)s, %(date)s, %(event_status)s, %(location)s)
             ON CONFLICT (event_id) DO UPDATE SET
+                name = EXCLUDED.name,
+                date = EXCLUDED.date,
                 event_status = EXCLUDED.event_status,
+                location = EXCLUDED.location,
                 updated_at = CURRENT_TIMESTAMP;
         """
         self.cur.execute(query, data)
@@ -551,7 +544,9 @@ class PostgresPipeline:
             INSERT INTO fighters (fighter_id, name, stance, dob, height, weight, reach)
             VALUES (%(fighter_id)s, %(name)s, %(stance)s, %(dob)s, %(height)s, %(weight)s, %(reach)s)
             ON CONFLICT (fighter_id) DO UPDATE SET
+                name = EXCLUDED.name,
                 stance = EXCLUDED.stance,
+                dob = EXCLUDED.dob,
                 height = EXCLUDED.height,
                 weight = EXCLUDED.weight,
                 reach  = EXCLUDED.reach,
@@ -575,12 +570,33 @@ class PostgresPipeline:
                 %(method_raw)s, %(finish_type)s, %(decision_type)s, %(referee)s, %(event_status)s
             )
             ON CONFLICT (fight_id) DO UPDATE SET
+                event_id = EXCLUDED.event_id,
+                event_date = EXCLUDED.event_date,
                 weight_class = EXCLUDED.weight_class,
+                gender = EXCLUDED.gender,
+                is_title_fight = EXCLUDED.is_title_fight,
+                red_fighter_id = EXCLUDED.red_fighter_id,
+                blue_fighter_id = EXCLUDED.blue_fighter_id,
+                red_fighter_name = EXCLUDED.red_fighter_name,
+                blue_fighter_name = EXCLUDED.blue_fighter_name,
                 red_status = EXCLUDED.red_status,
                 blue_status = EXCLUDED.blue_status,
                 result_type = EXCLUDED.result_type,
                 winner_id = EXCLUDED.winner_id,
+                loser_id = EXCLUDED.loser_id,
+                winner_color = EXCLUDED.winner_color,
+                end_round = EXCLUDED.end_round,
+                end_round_time = EXCLUDED.end_round_time,
+                total_duration = EXCLUDED.total_duration,
+                rounds_scheduled = EXCLUDED.rounds_scheduled,
+                time_scheduled = EXCLUDED.time_scheduled,
+                method_raw = EXCLUDED.method_raw,
+                finish_type = EXCLUDED.finish_type,
+                decision_type = EXCLUDED.decision_type,
+                referee = EXCLUDED.referee,
+                event_status = EXCLUDED.event_status,
                 updated_at = CURRENT_TIMESTAMP;
+
         """
         self.cur.execute(query, data)
 
@@ -612,6 +628,39 @@ class PostgresPipeline:
                 %(ground_str_landed)s, %(ground_str_attempted)s, %(ground_str_raw)s, %(event_status)s
             )
             ON CONFLICT (fight_id, fighter_id) DO UPDATE SET
+                opponent_id = EXCLUDED.opponent_id,
+                knockdowns = EXCLUDED.knockdowns,
+                sub_attempts = EXCLUDED.sub_attempts,
+                reversals = EXCLUDED.reversals,
+                ctrl_time = EXCLUDED.ctrl_time,
+                tot_str_landed = EXCLUDED.tot_str_landed,
+                tot_str_attempted = EXCLUDED.tot_str_attempted,
+                tot_str_raw = EXCLUDED.tot_str_raw,
+                td_landed = EXCLUDED.td_landed,
+                td_attempted = EXCLUDED.td_attempted,
+                td_raw = EXCLUDED.td_raw,
+                sig_str_landed = EXCLUDED.sig_str_landed,
+                sig_str_attempted = EXCLUDED.sig_str_attempted,
+                sig_str_raw = EXCLUDED.sig_str_raw,
+                head_str_landed = EXCLUDED.head_str_landed,
+                head_str_attempted = EXCLUDED.head_str_attempted,
+                head_str_raw = EXCLUDED.head_str_raw,
+                body_str_landed = EXCLUDED.body_str_landed,
+                body_str_attempted = EXCLUDED.body_str_attempted,
+                body_str_raw = EXCLUDED.body_str_raw,
+                leg_str_landed = EXCLUDED.leg_str_landed,
+                leg_str_attempted = EXCLUDED.leg_str_attempted,
+                leg_str_raw = EXCLUDED.leg_str_raw,
+                distance_str_landed = EXCLUDED.distance_str_landed,
+                distance_str_attempted = EXCLUDED.distance_str_attempted,
+                distance_str_raw = EXCLUDED.distance_str_raw,
+                clinch_str_landed = EXCLUDED.clinch_str_landed,
+                clinch_str_attempted = EXCLUDED.clinch_str_attempted,
+                clinch_str_raw = EXCLUDED.clinch_str_raw,
+                ground_str_landed = EXCLUDED.ground_str_landed,
+                ground_str_attempted = EXCLUDED.ground_str_attempted,
+                ground_str_raw = EXCLUDED.ground_str_raw,
+                event_status = EXCLUDED.event_status,
                 updated_at = CURRENT_TIMESTAMP;
         """
         self.cur.execute(query, data)

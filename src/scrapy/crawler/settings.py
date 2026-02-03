@@ -63,20 +63,17 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-  "crawler.pipelines.FightIdentityPipeline": 200,
-  "crawler.pipelines.FightTimePipeline": 201,
-  "crawler.pipelines.FightResultsPipeline": 202,
-  "crawler.pipelines.FighterPipeline": 203,
-  "crawler.pipelines.DateFormattingPipeline": 204,
-  "crawler.pipelines.FightUpcomingPipeline": 205,
-  "crawler.pipelines.FighterFightUpcomingPipeline": 206,
-  "crawler.pipelines.FighterFightConvertPipeline": 207,
-  "crawler.pipelines.ValidationPipeline": 208,
-  "crawler.pipelines.EventLoggingPipeline": 250,
-  "crawler.pipelines.FighterLoggingPipeline": 251,
-  "crawler.pipelines.FightLoggingPipeline": 252,
-  "crawler.pipelines.FFCleanStatsPipeline": 253,
-  "crawler.pipelines.FFLoggingPipeline": 255,
+  "crawler.pipelines.FightProcessorPipeline": 200,
+  "crawler.pipelines.DateFormattingPipeline": 210,
+  "crawler.pipelines.FighterProcessorPipeline": 220,
+  "crawler.pipelines.FightUpcomingProcessorPipeline": 230,
+  "crawler.pipelines.FighterFightProcessorPipeline": 240,
+  "crawler.pipelines.FighterFightUpcomingPipeline": 250,
+  "crawler.pipelines.ValidationPipeline": 260,
+  "crawler.pipelines.EventLoggingPipeline": 290,
+  "crawler.pipelines.FighterLoggingPipeline": 291,
+  "crawler.pipelines.FightLoggingPipeline": 292,
+  "crawler.pipelines.FighterFightLoggingPipeline": 293,
    "crawler.pipelines.PostgresPipeline": 300,
 }
 
