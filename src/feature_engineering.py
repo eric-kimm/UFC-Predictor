@@ -1,5 +1,4 @@
 import os
-
 import numpy as np
 import pandas as pd
 from sqlalchemy import create_engine
@@ -10,13 +9,14 @@ def connect_to_postgres():
   return create_engine(conn_string)
 
 def get_fighter_fights_table(engine):
-  query1 = 'SELECT * FROM fighter_fights;'
+  query1 = "SELECT * FROM fighter_fights;"
   fighter_fights = pd.read_sql(query1, con=engine)
   return fighter_fights
 
 def get_fights_table(engine):
-  query2 = 'SELECT * FROM fights;'
+  query2 = "SELECT * FROM fights;"
   fights = pd.read_sql(query2, con=engine)
+  fights = fights.drop(['event_status'], axis = 1)
   return fights
 
 def merge_tables(fighter_fights, fights):
@@ -37,9 +37,7 @@ def merge_tables(fighter_fights, fights):
       "result_type",
       "end_round_time",
       "time_scheduled",
-      "method_raw",
-      'event_status_x',
-      'event_status_y'
+      "method_raw"
   ]
 
   df = df.drop(drop_cols, axis = 1)
@@ -83,7 +81,7 @@ def calculate_weighted_moving_averages(df):
             'end_round','rounds_scheduled', 'finish_type', 'total_duration',
             'decision_type', 'referee','tot_str_raw', 'td_raw', 'sig_str_raw', 
             'head_str_raw', 'body_str_raw', 'leg_str_raw','distance_str_raw',
-            'clinch_str_raw','ground_str_raw','updated_at'
+            'clinch_str_raw','ground_str_raw','updated_at', 'event_status'
             ] 
             
   cols = [c for c in wanted if c not in unwanted]
@@ -116,6 +114,7 @@ def calculate_weighted_moving_averages(df):
       "finish_type",
       "decision_type",
       "referee",
+      "event_status"
   ] + [
       f"avg_{c}" for c in cols
   ]
@@ -123,13 +122,6 @@ def calculate_weighted_moving_averages(df):
   df = df[final_cols]
 
   return df
-
-def print_table_descending(df):
-  print(df.shape)
-  print(df.columns)
-
-  df = df.sort_values(by=['event_date', 'fight_id'])
-  print(df.head(10))
 
 def calculate_rates(df):
   # General rates
@@ -176,11 +168,11 @@ def calculate_rates(df):
     np.nan
   )
 
-  df = calculate_delta_rates(df, specs)
+  df = calculate_delta_rates(df)
 
   return df
 
-def calculate_delta_rates(df, specs):
+def calculate_delta_rates(df):
   cols = ['SLpM', 'SApM', 'StrAcc', 'StrDef', 'TDavg', 'TDdef', 'TDacc', 'SubAvg', 'head_ratio', 'head_acc', 'body_ratio', 'body_acc', 
         'leg_ratio', 'leg_acc', 'distance_ratio', 'distance_acc', 'clinch_ratio', 'clinch_acc', 'ground_ratio', 'ground_acc', 
         'knockdown_avg', 'reversal_avg', 'ctrl_time_pct', 'str_eff']
@@ -200,9 +192,6 @@ def calculate_delta_rates(df, specs):
   df['net_str_eff'] = (df['w_SLpM'] - df['w_SApM']) - (df['opp_w_SLpM'] - df['opp_w_SApM'])
 
   df = drop_avg_cols(df, cols)
-
-  print("COLUMNS:")
-  print(df.columns)
 
   return df
 
@@ -278,10 +267,10 @@ def encode_categorical_columns(df):
   df['decision_type'] = df['decision_type'].str.replace("-", "_", regex=False)
   df['stance'] = df['stance'].str.replace(" ", "_", regex=False)
 
-  # One hot encoding
   df = pd.get_dummies(df, columns=['weight_class', 'finish_type', 'decision_type', 'stance'])
 
-  # Remove unnecessary columns
+  print("COLUMNS:", df.columns)
+
   df = df[
     ~df['fight_id'].isin(
       df.loc[
@@ -300,9 +289,9 @@ def encode_categorical_columns(df):
     )
   ]
 
-  drop_cols = ['finish_type_DQ', 'finish_type_Draw', 'finish_type_NC', 'decision_type_OTHER_DEC', 'stance_Sideways', 'stance_Open_Stance']
+  # drop_cols = ['finish_type_DQ', 'finish_type_Draw', 'finish_type_NC', 'decision_type_OTHER_DEC', 'stance_Sideways', 'stance_Open_Stance']
 
-  df = df.drop(drop_cols, axis=1)
+  # df = df.drop(drop_cols, axis=1)
 
   return df
 
@@ -409,7 +398,7 @@ def add_is_debut_feature(df):
 def convert_data_to_wide_format(df):
   shared_cols = [
     'fight_id', 'event_date', 'is_title_fight', 'winner_color', 'end_round', 
-    'total_duration', 'rounds_scheduled', 'referee', 'weight_class_Bantamweight',
+    'total_duration', 'rounds_scheduled', 'referee', 'event_status', 'weight_class_Bantamweight',
     'weight_class_Catch_Weight', 'weight_class_Featherweight',
     'weight_class_Flyweight', 'weight_class_Heavyweight',
     'weight_class_Light_Heavyweight', 'weight_class_Lightweight',
@@ -462,6 +451,13 @@ def clean_up_for_training(df):
 def save_data_as_parquet(df):
   df.to_parquet("data.parquet", engine="pyarrow", compression="snappy", index=False)
 
+def print_table_descending(df):
+  print(df.shape)
+  print(df.columns)
+
+  df = df.sort_values(by=['event_date', 'fight_id'], ascending=False)
+  print(df.head(10))
+
 
 def main():
   conn_engine = connect_to_postgres()
@@ -488,6 +484,7 @@ def main():
 
   print_table_descending(df)
   df = clean_up_for_training(df)
+
   print(df.head(10))
   save_data_as_parquet(df)
 

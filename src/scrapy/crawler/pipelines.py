@@ -130,9 +130,9 @@ class FightProcessorPipeline:
         if item.get('event_status') == 'upcoming':
             return item   
         
+        item = self.handle_winners_and_losers(item)
         item = self.handle_results(item)
         item = self.handle_time(item)
-        item = self.handle_winners_and_losers(item)
 
         return item
         
