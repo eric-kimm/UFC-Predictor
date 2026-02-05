@@ -1,6 +1,9 @@
 # UFC Fight Predictor
 
-## Details
+## Architecture
+![UFC Fight Predictor Architecture Diagram](ufc.jpg)
+
+## Project Details
 
 - Scraped events, fights, fighters, and stats with Scrapy
 - Stored data into PostgreSQL
