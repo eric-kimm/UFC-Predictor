@@ -1,7 +1,7 @@
 # UFC Fight Predictor
 
 ## Architecture
-<p align="center">
+<p>
   <img src="ufc.jpg" width="500">
 </p>
 
