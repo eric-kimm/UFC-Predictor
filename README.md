@@ -1,7 +1,9 @@
 # UFC Fight Predictor
 
 ## Architecture
-![UFC Fight Predictor Architecture Diagram](ufc.jpg)
+<p align="center">
+  <img src="ufc.jpg" width="500">
+</p>
 
 ## Project Details
 
