@@ -1,8 +1,8 @@
 # UFC Fight Predictor
 
-## Architecture
+## High-Level Architecture
 <p>
-  <img src="ufc.jpg" width="500">
+  <img src="ufc.jpg" width="600">
 </p>
 
 ## Project Details
